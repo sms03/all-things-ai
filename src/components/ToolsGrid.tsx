@@ -8,13 +8,13 @@ interface ToolsGridProps {
 
 const ToolsGrid = ({ tools }: ToolsGridProps) => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-          Discover Amazing AI Tools
+        <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-white mb-4">
+          Discover AI Tools
         </h2>
-        <p className="text-gray-400 text-lg">
-          {tools.length} tools found
+        <p className="text-gray-600 dark:text-gray-400 text-lg font-light">
+          {tools.length} {tools.length === 1 ? 'tool' : 'tools'} found
         </p>
       </div>
 
@@ -25,10 +25,10 @@ const ToolsGrid = ({ tools }: ToolsGridProps) => {
       </div>
 
       {tools.length === 0 && (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🤖</div>
-          <h3 className="text-2xl font-semibold text-gray-300 mb-2">No tools found</h3>
-          <p className="text-gray-500">Try adjusting your filters or search query</p>
+        <div className="text-center py-20">
+          <div className="text-6xl mb-6">🔍</div>
+          <h3 className="text-2xl font-light text-gray-900 dark:text-white mb-2">No tools found</h3>
+          <p className="text-gray-600 dark:text-gray-400">Try adjusting your search or filters</p>
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 interface FilterBarProps {
   selectedCategory: string;
@@ -13,9 +13,9 @@ interface FilterBarProps {
 }
 
 const categories = [
-  { id: 'all', name: 'All Tools' },
+  { id: 'all', name: 'All' },
   { id: 'image-art', name: 'Image & Art' },
-  { id: 'text-copywriting', name: 'Text & Copy' },
+  { id: 'text-copywriting', name: 'Writing' },
   { id: 'video-audio', name: 'Video & Audio' },
   { id: 'productivity', name: 'Productivity' },
   { id: 'developer', name: 'Developer' },
@@ -25,7 +25,7 @@ const categories = [
 ];
 
 const pricingOptions = [
-  { id: 'all', name: 'All Pricing' },
+  { id: 'all', name: 'All' },
   { id: 'free', name: 'Free' },
   { id: 'freemium', name: 'Freemium' },
   { id: 'paid', name: 'Paid' },
@@ -40,38 +40,34 @@ const FilterBar = ({
   setSearchQuery,
 }: FilterBarProps) => {
   return (
-    <div className="mb-12">
+    <div className="mb-16 space-y-8">
       {/* Search Bar */}
-      <div className="relative max-w-2xl mx-auto mb-8">
+      <div className="relative max-w-2xl mx-auto">
         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
         <Input
           type="text"
           placeholder="Search AI tools..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-12 pr-4 py-4 text-lg bg-white/5 border-white/10 backdrop-blur-sm rounded-full focus:border-blue-400/50 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+          className="pl-12 pr-4 py-4 text-lg bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-2xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 shadow-sm"
         />
       </div>
 
       {/* Filter Buttons */}
-      <div className="flex flex-col space-y-6">
+      <div className="space-y-6">
         {/* Categories */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2 text-sm text-gray-400">
-            <Filter className="w-4 h-4" />
-            <span>Categories</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
+        <div className="text-center">
+          <div className="flex flex-wrap justify-center gap-2">
             {categories.map((category) => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
+                variant={selectedCategory === category.id ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setSelectedCategory(category.id)}
-                className={`rounded-full transition-all duration-300 ${
+                className={`rounded-full px-6 py-2 transition-all duration-300 font-medium ${
                   selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                    : 'border-white/20 text-gray-300 hover:bg-white/5 hover:border-white/30'
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
                 {category.name}
@@ -81,21 +77,18 @@ const FilterBar = ({
         </div>
 
         {/* Pricing */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2 text-sm text-gray-400">
-            <span>Pricing</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
+        <div className="text-center">
+          <div className="flex flex-wrap justify-center gap-2">
             {pricingOptions.map((pricing) => (
               <Button
                 key={pricing.id}
                 variant={selectedPricing === pricing.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedPricing(pricing.id)}
-                className={`rounded-full transition-all duration-300 ${
+                className={`rounded-full px-4 py-2 transition-all duration-300 font-medium ${
                   selectedPricing === pricing.id
-                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg'
-                    : 'border-white/20 text-gray-300 hover:bg-white/5 hover:border-white/30'
+                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
                 {pricing.name}
