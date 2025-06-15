@@ -6,7 +6,7 @@ import { Heart, ExternalLink, Star } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import { toast } from '@/hooks/use-toast';
-import { Button } from 'reactbits';
+import { Button } from '@/components/Button';
 import type { Tool } from '@/hooks/useSupabaseData';
 
 interface ToolCardProps {

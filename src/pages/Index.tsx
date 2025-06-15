@@ -1,11 +1,10 @@
-
 import { useState } from 'react';
 import Hero from '@/components/Hero';
 import ToolsGrid from '@/components/ToolsGrid';
 import FilterBar from '@/components/FilterBar';
 import Navigation from '@/components/Navigation';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
-import { Background } from 'reactbits';
+import { Background } from '@/components/Background';
 
 const Index = () => {
   const { tools, categories, loading } = useSupabaseData();

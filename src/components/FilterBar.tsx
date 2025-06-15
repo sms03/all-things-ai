@@ -1,7 +1,6 @@
-
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { Button } from 'reactbits';
+import { Button } from '@/components/Button';
 
 interface Category {
   id: string;

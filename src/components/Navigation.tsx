@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { User, LogIn, Plus, Brain } from 'lucide-react';
-import { Button } from 'reactbits';
+import { Button } from '@/components/Button';
 import PopulateTools from './PopulateTools';
 
 const Navigation = () => {
