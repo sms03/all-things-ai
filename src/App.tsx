@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import SubmitTool from "./pages/SubmitTool";
+import ToolDetail from "./pages/ToolDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ function App() {
               <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/submit-tool" element={<SubmitTool />} />
+              <Route path="/tool/:id" element={<ToolDetail />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
