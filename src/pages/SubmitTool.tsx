@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,11 +29,6 @@ const SubmitTool = () => {
   const [newTag, setNewTag] = useState('');
   const [categories, setCategories] = useState<Array<{id: string, name: string}>>([]);
 
-  // Fetch categories on component mount
-  useState(() => {
-    fetchCategories();
-  });
-
   const fetchCategories = async () => {
     try {
       const { data, error } = await supabase
@@ -47,6 +42,11 @@ const SubmitTool = () => {
       console.error('Error fetching categories:', error);
     }
   };
+
+  // Fetch categories on component mount
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const addTag = () => {
     if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
