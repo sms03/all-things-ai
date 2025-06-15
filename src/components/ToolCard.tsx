@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ExternalLink, Star } from 'lucide-react';
-import { Tool } from '@/types/tool';
+import { useAuth } from '@/hooks/useAuth';
+import { useSupabaseData } from '@/hooks/useSupabaseData';
+import { toast } from '@/hooks/use-toast';
+import type { Tool } from '@/hooks/useSupabaseData';
 
 interface ToolCardProps {
   tool: Tool;
@@ -12,11 +15,40 @@ interface ToolCardProps {
 }
 
 const ToolCard = ({ tool, index }: ToolCardProps) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const { user } = useAuth();
+  const { bookmarkedToolIds, toggleBookmark } = useSupabaseData();
+  const [isTogglingBookmark, setIsTogglingBookmark] = useState(false);
 
-  const handleBookmark = (e: React.MouseEvent) => {
+  const isBookmarked = bookmarkedToolIds.has(tool.id);
+
+  const handleBookmark = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsBookmarked(!isBookmarked);
+    
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to bookmark tools",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsTogglingBookmark(true);
+    const result = await toggleBookmark(tool.id);
+    
+    if (result !== null) {
+      toast({
+        title: result ? "Bookmarked!" : "Bookmark removed",
+        description: result ? "Tool added to your favorites" : "Tool removed from your favorites",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to update bookmark",
+        variant: "destructive",
+      });
+    }
+    setIsTogglingBookmark(false);
   };
 
   const getPricingColor = (pricing: string) => {
@@ -60,6 +92,7 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
             variant="ghost"
             size="sm"
             onClick={handleBookmark}
+            disabled={isTogglingBookmark}
             className={`p-2 rounded-full transition-all duration-300 ${
               isBookmarked 
                 ? 'text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-900/20' 

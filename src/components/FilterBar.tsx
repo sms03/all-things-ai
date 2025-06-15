@@ -3,7 +3,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 interface FilterBarProps {
+  categories: Category[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
   selectedPricing: string;
@@ -11,18 +17,6 @@ interface FilterBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
-
-const categories = [
-  { id: 'all', name: 'All' },
-  { id: 'image-art', name: 'Image & Art' },
-  { id: 'text-copywriting', name: 'Writing' },
-  { id: 'video-audio', name: 'Video & Audio' },
-  { id: 'productivity', name: 'Productivity' },
-  { id: 'developer', name: 'Developer' },
-  { id: 'chatbots', name: 'Chatbots' },
-  { id: 'research', name: 'Research' },
-  { id: 'marketing', name: 'Marketing' },
-];
 
 const pricingOptions = [
   { id: 'all', name: 'All' },
@@ -32,6 +26,7 @@ const pricingOptions = [
 ];
 
 const FilterBar = ({
+  categories,
   selectedCategory,
   setSelectedCategory,
   selectedPricing,

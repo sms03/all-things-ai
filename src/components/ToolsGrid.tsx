@@ -1,6 +1,6 @@
 
 import ToolCard from '@/components/ToolCard';
-import { Tool } from '@/types/tool';
+import type { Tool } from '@/hooks/useSupabaseData';
 
 interface ToolsGridProps {
   tools: Tool[];
