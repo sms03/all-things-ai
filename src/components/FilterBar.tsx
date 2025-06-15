@@ -35,34 +35,34 @@ const FilterBar = ({
   setSearchQuery,
 }: FilterBarProps) => {
   return (
-    <div className="mb-16 space-y-8">
+    <div className="space-y-6">
       {/* Search Bar */}
-      <div className="relative max-w-2xl mx-auto">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+      <div className="relative max-w-xl mx-auto">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
         <Input
           type="text"
           placeholder="Search AI tools..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-12 pr-4 py-4 text-lg bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-2xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 shadow-sm"
+          className="pl-10 pr-4 py-2 ibm-plex-serif-regular bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-md focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-colors"
         />
       </div>
 
       {/* Filter Buttons */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Categories */}
         <div className="text-center">
           <div className="flex flex-wrap justify-center gap-2">
             {categories.map((category) => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "ghost"}
+                variant={selectedCategory === category.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory(category.id)}
-                className={`rounded-full px-6 py-2 transition-all duration-300 font-medium ${
+                className={`h-8 px-4 ibm-plex-serif-medium rounded-md border transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
+                    ? 'bg-black text-white border-black hover:bg-gray-800 dark:bg-white dark:text-black dark:border-white dark:hover:bg-gray-200'
+                    : 'bg-white text-black border-gray-300 hover:bg-gray-50 hover:border-gray-400 dark:bg-black dark:text-white dark:border-gray-700 dark:hover:bg-gray-900 dark:hover:border-gray-600'
                 }`}
               >
                 {category.name}
@@ -80,10 +80,10 @@ const FilterBar = ({
                 variant={selectedPricing === pricing.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedPricing(pricing.id)}
-                className={`rounded-full px-4 py-2 transition-all duration-300 font-medium ${
+                className={`h-8 px-4 ibm-plex-serif-medium rounded-md border transition-colors ${
                   selectedPricing === pricing.id
-                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white'
-                    : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
+                    ? 'bg-black text-white border-black hover:bg-gray-800 dark:bg-white dark:text-black dark:border-white dark:hover:bg-gray-200'
+                    : 'bg-white text-black border-gray-300 hover:bg-gray-50 hover:border-gray-400 dark:bg-black dark:text-white dark:border-gray-700 dark:hover:bg-gray-900 dark:hover:border-gray-600'
                 }`}
               >
                 {pricing.name}
