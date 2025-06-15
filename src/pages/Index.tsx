@@ -5,6 +5,7 @@ import ToolsGrid from '@/components/ToolsGrid';
 import FilterBar from '@/components/FilterBar';
 import Navigation from '@/components/Navigation';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
+import { Background } from 'reactbits';
 
 const Index = () => {
   const { tools, categories, loading } = useSupabaseData();
@@ -29,7 +30,8 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black">
+      <div className="min-h-screen">
+        <Background variant="gradient" />
         <Navigation />
         <div className="flex items-center justify-center min-h-screen pt-20">
           <div className="text-center bg-white/95 backdrop-blur-xl dark:bg-black/95 border border-gray-100/20 dark:border-white/10 rounded-3xl p-16 shadow-2xl animate-fade-in max-w-md mx-auto">
@@ -43,7 +45,8 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen">
+      <Background variant="gradient" />
       <Navigation />
       <div className="pt-20">
         <Hero />

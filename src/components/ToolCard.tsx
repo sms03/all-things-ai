@@ -1,12 +1,12 @@
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ExternalLink, Star } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import { toast } from '@/hooks/use-toast';
+import { Button } from 'reactbits';
 import type { Tool } from '@/hooks/useSupabaseData';
 
 interface ToolCardProps {
@@ -136,8 +136,9 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
           </Badge>
           
           <Button
+            variant="primary"
             size="sm"
-            className="h-10 px-6 font-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-full border border-black dark:border-white transition-all duration-300 hover:scale-105 group-hover:shadow-lg"
+            className="h-10 px-6 font-medium rounded-full transition-all duration-300 hover:scale-105 group-hover:shadow-lg"
             onClick={() => window.open(tool.website, '_blank')}
           >
             <ExternalLink className="w-4 h-4 mr-2" />

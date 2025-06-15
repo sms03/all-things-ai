@@ -1,7 +1,7 @@
 
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
+import { Button } from 'reactbits';
 
 interface Category {
   id: string;
@@ -62,12 +62,12 @@ const FilterBar = ({
             {categories.map((category) => (
               <Button
                 key={category.id}
-                variant="ghost"
+                variant={selectedCategory === category.id ? "primary" : "ghost"}
                 onClick={() => setSelectedCategory(category.id)}
                 className={`h-12 px-6 text-sm font-medium rounded-full transition-all duration-300 tracking-tight ${
                   selectedCategory === category.id
-                    ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100 border border-gray-900 dark:border-white'
-                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-900/50 dark:text-gray-300 dark:hover:bg-gray-800/80 dark:hover:text-white border border-gray-200/50 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 shadow-sm hover:shadow-md'
+                    ? 'scale-105'
+                    : 'hover:scale-105'
                 }`}
               >
                 {category.name}
@@ -86,12 +86,12 @@ const FilterBar = ({
             {pricingOptions.map((pricing) => (
               <Button
                 key={pricing.id}
-                variant="ghost"
+                variant={selectedPricing === pricing.id ? "primary" : "ghost"}
                 onClick={() => setSelectedPricing(pricing.id)}
                 className={`h-12 px-8 text-sm font-medium rounded-full transition-all duration-300 tracking-tight ${
                   selectedPricing === pricing.id
-                    ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100 border border-gray-900 dark:border-white'
-                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-900/50 dark:text-gray-300 dark:hover:bg-gray-800/80 dark:hover:text-white border border-gray-200/50 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 shadow-sm hover:shadow-md'
+                    ? 'scale-105'
+                    : 'hover:scale-105'
                 }`}
               >
                 {pricing.name}

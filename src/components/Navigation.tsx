@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { User, LogIn, Plus, Brain } from 'lucide-react';
+import { Button } from 'reactbits';
 import PopulateTools from './PopulateTools';
 
 const Navigation = () => {
@@ -53,9 +53,9 @@ const Navigation = () => {
             {/* Submit Tool Button */}
             <Link to="/submit-tool">
               <Button 
-                variant="ghost" 
-                size={isScrolled ? "sm" : "default"}
-                className={`font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-lg ${
+                variant="outline" 
+                size={isScrolled ? "sm" : "md"}
+                className={`font-medium rounded-full transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-lg ${
                   isScrolled ? 'h-9 px-4 text-sm' : 'h-11 px-6 text-base'
                 }`}
               >
@@ -70,8 +70,8 @@ const Navigation = () => {
               <Link to="/profile">
                 <Button 
                   variant="ghost" 
-                  size={isScrolled ? "sm" : "default"}
-                  className={`font-medium rounded-full hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-300 hover:scale-105 ${
+                  size={isScrolled ? "sm" : "md"}
+                  className={`font-medium rounded-full transition-all duration-300 hover:scale-105 ${
                     isScrolled ? 'h-9 px-4' : 'h-11 px-4'
                   }`}
                 >
@@ -86,9 +86,9 @@ const Navigation = () => {
             ) : (
               <Link to="/auth">
                 <Button 
-                  variant="ghost" 
-                  size={isScrolled ? "sm" : "default"}
-                  className={`font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-lg ${
+                  variant="outline" 
+                  size={isScrolled ? "sm" : "md"}
+                  className={`font-medium rounded-full transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-lg ${
                     isScrolled ? 'h-9 px-4 text-sm' : 'h-11 px-6 text-base'
                   }`}
                 >
