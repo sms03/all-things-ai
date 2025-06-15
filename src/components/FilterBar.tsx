@@ -35,39 +35,39 @@ const FilterBar = ({
   setSearchQuery,
 }: FilterBarProps) => {
   return (
-    <div className="space-y-12 py-16">
+    <div className="space-y-16 py-20">
       {/* Search Bar */}
       <div className="max-w-2xl mx-auto">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <Input
             type="text"
             placeholder="Search AI tools..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-14 pl-12 pr-6 text-lg bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-sm hover:shadow-md focus:shadow-lg focus:border-gray-300 transition-all duration-300 placeholder:text-gray-400"
+            className="w-full h-16 pl-14 pr-6 text-lg bg-white/90 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-2xl shadow-lg hover:shadow-xl focus:shadow-2xl focus:border-gray-300 dark:focus:border-white/20 transition-all duration-300 placeholder:text-gray-400 dark:bg-black/90 dark:text-white font-medium tracking-tight"
           />
         </div>
       </div>
 
       {/* Filter Sections */}
-      <div className="space-y-16">
+      <div className="space-y-20">
         {/* Categories */}
-        <div className="text-center space-y-8">
+        <div className="text-center space-y-10">
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Categories</h3>
-            <p className="text-gray-600 dark:text-gray-400">Explore tools by category</p>
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3 tracking-tight">Categories</h3>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">Explore tools by category</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3 max-w-5xl mx-auto">
             {categories.map((category) => (
               <Button
                 key={category.id}
                 variant="ghost"
                 onClick={() => setSelectedCategory(category.id)}
-                className={`h-12 px-6 text-sm font-medium rounded-full transition-all duration-300 ${
+                className={`h-12 px-6 text-sm font-medium rounded-full transition-all duration-300 tracking-tight ${
                   selectedCategory === category.id
-                    ? 'bg-black text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100'
-                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/80 dark:hover:text-white'
+                    ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100 border border-gray-900 dark:border-white'
+                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-900/50 dark:text-gray-300 dark:hover:bg-gray-800/80 dark:hover:text-white border border-gray-200/50 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 shadow-sm hover:shadow-md'
                 }`}
               >
                 {category.name}
@@ -77,21 +77,21 @@ const FilterBar = ({
         </div>
 
         {/* Pricing */}
-        <div className="text-center space-y-8">
+        <div className="text-center space-y-10">
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Pricing</h3>
-            <p className="text-gray-600 dark:text-gray-400">Filter by pricing model</p>
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3 tracking-tight">Pricing</h3>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">Filter by pricing model</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
             {pricingOptions.map((pricing) => (
               <Button
                 key={pricing.id}
                 variant="ghost"
                 onClick={() => setSelectedPricing(pricing.id)}
-                className={`h-12 px-8 text-sm font-medium rounded-full transition-all duration-300 ${
+                className={`h-12 px-8 text-sm font-medium rounded-full transition-all duration-300 tracking-tight ${
                   selectedPricing === pricing.id
-                    ? 'bg-black text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100'
-                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/80 dark:hover:text-white'
+                    ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100 border border-gray-900 dark:border-white'
+                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-900/50 dark:text-gray-300 dark:hover:bg-gray-800/80 dark:hover:text-white border border-gray-200/50 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 shadow-sm hover:shadow-md'
                 }`}
               >
                 {pricing.name}

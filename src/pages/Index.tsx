@@ -29,13 +29,13 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-black dark:to-gray-900">
+      <div className="min-h-screen bg-white dark:bg-black">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen pt-20">
-          <div className="text-center bg-white/80 backdrop-blur-xl dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-12 shadow-2xl animate-fade-in">
-            <div className="w-20 h-20 mx-auto mb-6 border-4 border-gray-900 dark:border-white rounded-full animate-spin border-t-transparent"></div>
-            <div className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Loading AI tools...</div>
-            <div className="text-gray-600 dark:text-gray-400">Discovering the future of AI</div>
+          <div className="text-center bg-white/95 backdrop-blur-xl dark:bg-black/95 border border-gray-100/20 dark:border-white/10 rounded-3xl p-16 shadow-2xl animate-fade-in max-w-md mx-auto">
+            <div className="w-16 h-16 mx-auto mb-8 border-2 border-gray-900 dark:border-white rounded-full animate-spin border-t-transparent"></div>
+            <div className="text-xl font-medium text-gray-900 dark:text-white mb-3 tracking-tight">Loading AI tools</div>
+            <div className="text-gray-500 dark:text-gray-400 text-sm">Discovering the future of AI</div>
           </div>
         </div>
       </div>
@@ -43,12 +43,12 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-black dark:to-gray-900">
+    <div className="min-h-screen bg-white dark:bg-black">
       <Navigation />
       <div className="pt-20">
         <Hero />
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="bg-white/60 backdrop-blur-xl dark:bg-gray-900/60 border border-gray-200/30 dark:border-gray-700/30 rounded-3xl shadow-xl animate-fade-in">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-32">
+          <div className="bg-white/80 backdrop-blur-xl dark:bg-black/80 border border-gray-100/30 dark:border-white/10 rounded-3xl shadow-2xl animate-fade-in mb-20">
             <FilterBar
               categories={categoryOptions}
               selectedCategory={selectedCategory}
@@ -59,7 +59,7 @@ const Index = () => {
               setSearchQuery={setSearchQuery}
             />
           </div>
-          <div className="mt-16 animate-fade-in">
+          <div className="animate-fade-in">
             <ToolsGrid tools={filteredTools} />
           </div>
         </div>
