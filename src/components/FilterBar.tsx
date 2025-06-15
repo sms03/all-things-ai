@@ -35,34 +35,39 @@ const FilterBar = ({
   setSearchQuery,
 }: FilterBarProps) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-12 py-16">
       {/* Search Bar */}
-      <div className="relative max-w-xl mx-auto">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
-        <Input
-          type="text"
-          placeholder="Search AI tools..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 pr-4 py-2 ibm-plex-serif-regular bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-md focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-colors"
-        />
+      <div className="max-w-2xl mx-auto">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Input
+            type="text"
+            placeholder="Search AI tools..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-14 pl-12 pr-6 text-lg bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-sm hover:shadow-md focus:shadow-lg focus:border-gray-300 transition-all duration-300 placeholder:text-gray-400"
+          />
+        </div>
       </div>
 
-      {/* Filter Buttons */}
-      <div className="space-y-4">
+      {/* Filter Sections */}
+      <div className="space-y-16">
         {/* Categories */}
-        <div className="text-center">
-          <div className="flex flex-wrap justify-center gap-2">
+        <div className="text-center space-y-8">
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Categories</h3>
+            <p className="text-gray-600 dark:text-gray-400">Explore tools by category</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
             {categories.map((category) => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                size="sm"
+                variant="ghost"
                 onClick={() => setSelectedCategory(category.id)}
-                className={`h-8 px-4 ibm-plex-serif-medium rounded-md border transition-colors ${
+                className={`h-12 px-6 text-sm font-medium rounded-full transition-all duration-300 ${
                   selectedCategory === category.id
-                    ? 'bg-black text-white border-black hover:bg-gray-800 dark:bg-white dark:text-black dark:border-white dark:hover:bg-gray-200'
-                    : 'bg-white text-black border-gray-300 hover:bg-gray-50 hover:border-gray-400 dark:bg-black dark:text-white dark:border-gray-700 dark:hover:bg-gray-900 dark:hover:border-gray-600'
+                    ? 'bg-black text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100'
+                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/80 dark:hover:text-white'
                 }`}
               >
                 {category.name}
@@ -72,18 +77,21 @@ const FilterBar = ({
         </div>
 
         {/* Pricing */}
-        <div className="text-center">
-          <div className="flex flex-wrap justify-center gap-2">
+        <div className="text-center space-y-8">
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Pricing</h3>
+            <p className="text-gray-600 dark:text-gray-400">Filter by pricing model</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
             {pricingOptions.map((pricing) => (
               <Button
                 key={pricing.id}
-                variant={selectedPricing === pricing.id ? "default" : "outline"}
-                size="sm"
+                variant="ghost"
                 onClick={() => setSelectedPricing(pricing.id)}
-                className={`h-8 px-4 ibm-plex-serif-medium rounded-md border transition-colors ${
+                className={`h-12 px-8 text-sm font-medium rounded-full transition-all duration-300 ${
                   selectedPricing === pricing.id
-                    ? 'bg-black text-white border-black hover:bg-gray-800 dark:bg-white dark:text-black dark:border-white dark:hover:bg-gray-200'
-                    : 'bg-white text-black border-gray-300 hover:bg-gray-50 hover:border-gray-400 dark:bg-black dark:text-white dark:border-gray-700 dark:hover:bg-gray-900 dark:hover:border-gray-600'
+                    ? 'bg-black text-white hover:bg-gray-800 shadow-lg scale-105 dark:bg-white dark:text-black dark:hover:bg-gray-100'
+                    : 'bg-gray-50/80 text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:scale-105 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/80 dark:hover:text-white'
                 }`}
               >
                 {pricing.name}

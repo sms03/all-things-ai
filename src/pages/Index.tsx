@@ -29,13 +29,13 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-black dark:to-gray-900">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen pt-20">
-          <div className="text-center bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg p-8 animate-fade-in">
-            <div className="w-16 h-16 mx-auto mb-4 border-2 border-black dark:border-white rounded-full animate-spin"></div>
-            <div className="text-lg ibm-plex-serif-medium text-black dark:text-white">Loading AI tools...</div>
-            <div className="text-sm ibm-plex-serif-regular text-gray-600 dark:text-gray-400 mt-2">Please wait</div>
+          <div className="text-center bg-white/80 backdrop-blur-xl dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-12 shadow-2xl animate-fade-in">
+            <div className="w-20 h-20 mx-auto mb-6 border-4 border-gray-900 dark:border-white rounded-full animate-spin border-t-transparent"></div>
+            <div className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Loading AI tools...</div>
+            <div className="text-gray-600 dark:text-gray-400">Discovering the future of AI</div>
           </div>
         </div>
       </div>
@@ -43,13 +43,12 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-black dark:to-gray-900">
       <Navigation />
-      {/* Add top padding to account for fixed navbar */}
       <div className="pt-20">
         <Hero />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg p-6 mb-8 animate-fade-in">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="bg-white/60 backdrop-blur-xl dark:bg-gray-900/60 border border-gray-200/30 dark:border-gray-700/30 rounded-3xl shadow-xl animate-fade-in">
             <FilterBar
               categories={categoryOptions}
               selectedCategory={selectedCategory}
@@ -60,7 +59,7 @@ const Index = () => {
               setSearchQuery={setSearchQuery}
             />
           </div>
-          <div className="animate-fade-in">
+          <div className="mt-16 animate-fade-in">
             <ToolsGrid tools={filteredTools} />
           </div>
         </div>

@@ -54,33 +54,37 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
   const getPricingColor = (pricing: string) => {
     switch (pricing) {
       case 'free': return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800';
-      case 'freemium': return 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800';
-      case 'paid': return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800';
+      case 'freemium': return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800';
+      case 'paid': return 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-800';
       default: return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700';
     }
   };
 
   return (
     <Card 
-      className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors animate-fade-in"
+      className="group bg-white/80 backdrop-blur-xl dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all duration-500 hover:scale-[1.02] animate-fade-in overflow-hidden"
       style={{
         animationDelay: `${index * 100}ms`,
       }}
     >
-      <CardContent className="p-6">
+      <CardContent className="p-8">
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-black dark:bg-white rounded-md flex items-center justify-center ibm-plex-serif-semibold text-white dark:text-black">
-              {tool.name.charAt(0)}
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-white dark:text-gray-900 text-xl font-bold">
+                {tool.name.charAt(0)}
+              </span>
             </div>
             <div>
-              <h3 className="ibm-plex-serif-semibold text-lg text-black dark:text-white">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
                 {tool.name}
               </h3>
-              <div className="flex items-center space-x-1 mt-1">
-                <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                <span className="ibm-plex-serif-regular text-sm text-gray-600 dark:text-gray-400">{tool.rating}</span>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{tool.rating}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -90,34 +94,34 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
             size="sm"
             onClick={handleBookmark}
             disabled={isTogglingBookmark}
-            className={`w-8 h-8 p-0 rounded-md transition-colors ${
+            className={`w-10 h-10 p-0 rounded-full transition-all duration-300 ${
               isBookmarked 
-                ? 'text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-900/20' 
-                : 'text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
+                ? 'text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-900/20 hover:scale-110' 
+                : 'text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:scale-110'
             }`}
           >
-            <Heart className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            <Heart className={`w-5 h-5 ${isBookmarked ? 'fill-current' : ''}`} />
           </Button>
         </div>
 
         {/* Description */}
-        <p className="ibm-plex-serif-regular text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed line-clamp-2">
+        <p className="text-gray-600 dark:text-gray-300 text-base mb-6 leading-relaxed line-clamp-3">
           {tool.description}
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4 min-h-[28px] items-start">
+        <div className="flex flex-wrap gap-2 mb-8 min-h-[32px] items-start">
           {tool.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center h-6 px-2 text-xs ibm-plex-serif-regular bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-700"
+              className="inline-flex items-center h-7 px-3 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full border border-gray-200 dark:border-gray-700"
             >
               {tag}
             </span>
           ))}
           {tool.tags.length > 3 && (
-            <span className="inline-flex items-center h-6 px-2 text-xs ibm-plex-serif-regular text-gray-400 dark:text-gray-500">
-              +{tool.tags.length - 3}
+            <span className="inline-flex items-center h-7 px-3 text-xs font-medium text-gray-500 dark:text-gray-400">
+              +{tool.tags.length - 3} more
             </span>
           )}
         </div>
@@ -126,18 +130,18 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
         <div className="flex items-center justify-between">
           <Badge 
             variant="outline" 
-            className={`h-6 px-2 ibm-plex-serif-medium text-xs border rounded ${getPricingColor(tool.pricing)}`}
+            className={`h-8 px-4 font-medium text-sm border rounded-full ${getPricingColor(tool.pricing)}`}
           >
             {tool.pricing.charAt(0).toUpperCase() + tool.pricing.slice(1)}
           </Badge>
           
           <Button
             size="sm"
-            className="h-8 px-4 ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded border border-black dark:border-white transition-colors"
+            className="h-10 px-6 font-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-full border border-black dark:border-white transition-all duration-300 hover:scale-105 group-hover:shadow-lg"
             onClick={() => window.open(tool.website, '_blank')}
           >
-            <ExternalLink className="w-3 h-3 mr-1" />
-            Try
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Try Now
           </Button>
         </div>
       </CardContent>
