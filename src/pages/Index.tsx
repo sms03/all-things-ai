@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Hero from '@/components/Hero';
 import ToolsGrid from '@/components/ToolsGrid';
 import FilterBar from '@/components/FilterBar';
