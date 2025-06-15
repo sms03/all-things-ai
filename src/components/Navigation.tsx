@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { User, LogIn } from 'lucide-react';
+import PopulateTools from './PopulateTools';
 
 const Navigation = () => {
   const { user } = useAuth();
@@ -17,6 +18,7 @@ const Navigation = () => {
           </Link>
           
           <div className="flex items-center space-x-4">
+            <PopulateTools />
             {user ? (
               <Link to="/profile">
                 <Button variant="ghost" size="sm">
