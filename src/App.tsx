@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import Profile from "./pages/Profile";
 import SubmitTool from "./pages/SubmitTool";
 import ToolDetail from "./pages/ToolDetail";
 import NotFound from "./pages/NotFound";
+import Comparisons from "./pages/Comparisons";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +28,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/submit-tool" element={<SubmitTool />} />
               <Route path="/tool/:id" element={<ToolDetail />} />
+              <Route path="/comparisons" element={<Comparisons />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

@@ -89,6 +89,109 @@ export type Database = {
         }
         Relationships: []
       }
+      review_votes: {
+        Row: {
+          created_at: string
+          id: string
+          is_helpful: boolean
+          review_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_helpful: boolean
+          review_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_helpful?: boolean
+          review_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_votes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          content: string | null
+          created_at: string
+          helpful_count: number | null
+          id: string
+          rating: number
+          title: string | null
+          tool_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          rating: number
+          title?: string | null
+          tool_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          rating?: number
+          title?: string | null
+          tool_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tool_comparisons: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          tool_ids: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          tool_ids: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          tool_ids?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tools: {
         Row: {
           category_id: string
@@ -141,6 +244,41 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_activities: {
+        Row: {
+          activity_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          tool_id: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          tool_id?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          tool_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_activities_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
             referencedColumns: ["id"]
           },
         ]

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Heart, Star, Calendar, User, Tag } from 'lucide-react';
@@ -12,6 +11,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import Navigation from '@/components/Navigation';
 import { Background } from '@/components/Background';
+import Reviews from '@/components/Reviews';
+import { useUserActivity } from '@/hooks/useUserActivity';
 
 interface ToolDetail {
   id: string;
@@ -35,6 +36,7 @@ const ToolDetail = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { bookmarkedToolIds, toggleBookmark } = useSupabaseData();
+  const { trackActivity } = useUserActivity();
   const [tool, setTool] = useState<ToolDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [isTogglingBookmark, setIsTogglingBookmark] = useState(false);
@@ -44,6 +46,12 @@ const ToolDetail = () => {
       fetchToolDetail();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (tool && user) {
+      trackActivity('view_tool', tool.id, { tool_name: tool.name });
+    }
+  }, [tool, user, trackActivity]);
 
   const fetchToolDetail = async () => {
     try {
@@ -94,6 +102,12 @@ const ToolDetail = () => {
     const result = await toggleBookmark(tool.id);
     
     if (result !== null) {
+      // Track bookmark activity
+      await trackActivity('bookmark_tool', tool.id, { 
+        tool_name: tool.name,
+        bookmarked: result 
+      });
+      
       toast({
         title: result ? "Bookmarked!" : "Bookmark removed",
         description: result ? "Tool added to your favorites" : "Tool removed from your favorites",
@@ -157,7 +171,7 @@ const ToolDetail = () => {
       <Navigation />
       
       <div className="pt-32 pb-20">
-        <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 space-y-8">
           {/* Header */}
           <div className="mb-8">
             <Link to="/">
@@ -274,6 +288,9 @@ const ToolDetail = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Reviews Section */}
+          <Reviews toolId={tool.id} />
         </div>
       </div>
     </div>
