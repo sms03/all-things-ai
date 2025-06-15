@@ -126,7 +126,7 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
           )}
         </div>
 
-        {/* Footer */}
+        {/* Footer - Aligned pricing and button */}
         <div className="flex items-center justify-between">
           <Badge 
             variant="outline" 
@@ -138,7 +138,7 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
           <Button
             variant="primary"
             size="sm"
-            className="h-10 px-6 font-medium rounded-full transition-all duration-300 hover:scale-105 group-hover:shadow-lg"
+            className="h-8 px-4 font-medium rounded-full transition-all duration-300 hover:scale-105 group-hover:shadow-lg text-sm"
             onClick={() => window.open(tool.website, '_blank')}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
