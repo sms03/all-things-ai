@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { LogOut, Heart, Plus, ExternalLink, Star } from 'lucide-react';
+import { LogOut, Heart, Plus, ExternalLink, Star, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 
 interface Tool {
@@ -186,9 +187,17 @@ const Profile = () => {
       <div className="border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold text-blue-600">
-              A2Z AI Tools
-            </Link>
+            <div className="flex items-center space-x-4">
+              <Link to="/">
+                <Button variant="outline" size="sm">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Home
+                </Button>
+              </Link>
+              <Link to="/" className="text-2xl font-bold text-blue-600">
+                A2Z AI Tools
+              </Link>
+            </div>
             <Button onClick={handleSignOut} variant="outline">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
