@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
-import { User, LogIn } from 'lucide-react';
+import { User, LogIn, Plus } from 'lucide-react';
 import PopulateTools from './PopulateTools';
 
 const Navigation = () => {
@@ -19,6 +19,12 @@ const Navigation = () => {
           
           <div className="flex items-center space-x-4">
             <PopulateTools />
+            <Link to="/submit-tool">
+              <Button variant="outline" size="sm">
+                <Plus className="w-4 h-4 mr-2" />
+                Submit Tool
+              </Button>
+            </Link>
             {user ? (
               <Link to="/profile">
                 <Button variant="ghost" size="sm">

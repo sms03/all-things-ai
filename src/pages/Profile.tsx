@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -314,7 +313,9 @@ const Profile = () => {
                   <p className="text-gray-500 dark:text-gray-400 mb-4">
                     Share your favorite AI tools with the community
                   </p>
-                  <Button>Submit a Tool</Button>
+                  <Link to="/submit-tool">
+                    <Button>Submit a Tool</Button>
+                  </Link>
                 </CardContent>
               </Card>
             ) : (
