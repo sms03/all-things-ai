@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
-import { User, LogIn, Plus, Zap, Brain } from 'lucide-react';
+import { User, LogIn, Plus, Brain } from 'lucide-react';
 import PopulateTools from './PopulateTools';
 
 const Navigation = () => {
@@ -22,31 +22,26 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ease-in-out ${
-      isScrolled ? 'navbar-small' : 'navbar-large'
-    }`}>
-      <div className={`glass rounded-full px-6 transition-all duration-300 ease-in-out ${
-        isScrolled ? 'py-2' : 'py-4'
-      } shadow-2xl border border-white/20`}>
-        <div className="flex items-center justify-between space-x-8">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
+      isScrolled ? 'py-2' : 'py-4'
+    } bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link 
             to="/" 
-            className={`flex items-center space-x-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 font-bold transition-all duration-300 ${
+            className={`flex items-center space-x-2 text-black dark:text-white ibm-plex-serif-bold transition-all duration-300 ${
               isScrolled ? 'text-lg' : 'text-xl'
             }`}
           >
-            <div className="relative">
-              <Brain className={`transition-all duration-300 ${isScrolled ? 'w-6 h-6' : 'w-8 h-8'} text-blue-500 animate-pulse-glow`} />
-              <Zap className={`absolute -top-1 -right-1 transition-all duration-300 ${isScrolled ? 'w-3 h-3' : 'w-4 h-4'} text-yellow-400`} />
-            </div>
+            <Brain className={`transition-all duration-300 ${isScrolled ? 'w-6 h-6' : 'w-8 h-8'}`} />
             <span className="hidden sm:block">A2Z AI Tools</span>
             <span className="sm:hidden">A2Z</span>
           </Link>
           
           {/* Navigation Items */}
-          <div className="flex items-center space-x-3">
-            {/* Populate Tools - Hidden on mobile when scrolled */}
+          <div className="flex items-center space-x-4">
+            {/* Populate Tools */}
             <div className={`transition-all duration-300 ${isScrolled ? 'hidden md:block' : 'block'}`}>
               <PopulateTools />
             </div>
@@ -56,7 +51,7 @@ const Navigation = () => {
               <Button 
                 variant="outline" 
                 size={isScrolled ? "sm" : "default"}
-                className="glass-card border-white/20 hover:glass hover:border-white/30 transition-all duration-300 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                className="ibm-plex-serif-medium border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
               >
                 <Plus className={`transition-all duration-300 ${isScrolled ? 'w-3 h-3' : 'w-4 h-4'} mr-2`} />
                 <span className="hidden sm:inline">Submit Tool</span>
@@ -70,10 +65,10 @@ const Navigation = () => {
                 <Button 
                   variant="ghost" 
                   size={isScrolled ? "sm" : "default"}
-                  className="glass-card border-white/20 hover:glass hover:border-white/30 transition-all duration-300 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="ibm-plex-serif-medium hover:bg-gray-100 dark:hover:bg-gray-900"
                 >
                   <Avatar className={`transition-all duration-300 ${isScrolled ? 'w-5 h-5' : 'w-6 h-6'} mr-2`}>
-                    <AvatarFallback className="text-xs bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                    <AvatarFallback className="text-xs bg-black text-white dark:bg-white dark:text-black">
                       {user.email?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -85,7 +80,7 @@ const Navigation = () => {
                 <Button 
                   variant="outline" 
                   size={isScrolled ? "sm" : "default"}
-                  className="glass-card border-white/20 hover:glass hover:border-white/30 transition-all duration-300 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="ibm-plex-serif-medium border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                 >
                   <LogIn className={`transition-all duration-300 ${isScrolled ? 'w-3 h-3' : 'w-4 h-4'} mr-2`} />
                   <span className="hidden sm:inline">Sign In</span>

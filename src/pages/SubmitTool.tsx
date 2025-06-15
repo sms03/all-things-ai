@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, X, User, LogIn, Zap } from 'lucide-react';
+import { ArrowLeft, Plus, X, User, LogIn, Brain } from 'lucide-react';
 
 const SubmitTool = () => {
   const { user } = useAuth();
@@ -136,22 +137,22 @@ const SubmitTool = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen neural-bg">
+      <div className="min-h-screen bg-white dark:bg-black">
         <div className="pt-24">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="glass-card rounded-2xl animate-slide-down">
+            <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg animate-fade-in">
               <div className="text-center py-12 px-6">
-                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                  <User className="w-10 h-10 text-white" />
+                <div className="w-20 h-20 mx-auto mb-6 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                  <User className="w-10 h-10 text-white dark:text-black" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-xl ibm-plex-serif-semibold text-black dark:text-white mb-2">
                   Sign in required
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                <p className="ibm-plex-serif-regular text-gray-600 dark:text-gray-400 mb-6">
                   Please sign in to submit an AI tool to our directory
                 </p>
                 <Link to="/auth">
-                  <Button className="gradient-ai text-white hover:opacity-90 transition-opacity">
+                  <Button className="ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors">
                     <LogIn className="w-4 h-4 mr-2" />
                     Sign In
                   </Button>
@@ -165,19 +166,19 @@ const SubmitTool = () => {
   }
 
   return (
-    <div className="min-h-screen neural-bg">
+    <div className="min-h-screen bg-white dark:bg-black">
       <div className="pt-24">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="glass-card rounded-2xl animate-slide-down">
+          <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg animate-fade-in">
             <div className="p-8">
               <div className="text-center mb-8">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center animate-float">
-                  <Plus className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 mx-auto mb-4 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                  <Plus className="w-8 h-8 text-white dark:text-black" />
                 </div>
-                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-2">
+                <h1 className="text-3xl ibm-plex-serif-bold text-black dark:text-white mb-2">
                   Submit an AI Tool
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="ibm-plex-serif-regular text-gray-600 dark:text-gray-400">
                   Share your favorite AI tool with the community. Help others discover amazing AI solutions!
                 </p>
               </div>
@@ -185,7 +186,7 @@ const SubmitTool = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Tool Name */}
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-gray-700 dark:text-gray-300 font-medium">Tool Name *</Label>
+                  <Label htmlFor="name" className="ibm-plex-serif-medium text-black dark:text-white">Tool Name *</Label>
                   <Input
                     id="name"
                     type="text"
@@ -193,13 +194,13 @@ const SubmitTool = () => {
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="e.g., ChatGPT, Midjourney, etc."
                     required
-                    className="glass-card border-white/20 focus:border-blue-400 transition-colors"
+                    className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
                   />
                 </div>
 
                 {/* Description */}
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="text-gray-700 dark:text-gray-300 font-medium">Description *</Label>
+                  <Label htmlFor="description" className="ibm-plex-serif-medium text-black dark:text-white">Description *</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
@@ -207,13 +208,13 @@ const SubmitTool = () => {
                     placeholder="Describe what this tool does and its key features..."
                     rows={4}
                     required
-                    className="glass-card border-white/20 focus:border-blue-400 transition-colors"
+                    className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
                   />
                 </div>
 
                 {/* Website URL */}
                 <div className="space-y-2">
-                  <Label htmlFor="website" className="text-gray-700 dark:text-gray-300 font-medium">Website URL *</Label>
+                  <Label htmlFor="website" className="ibm-plex-serif-medium text-black dark:text-white">Website URL *</Label>
                   <Input
                     id="website"
                     type="url"
@@ -221,23 +222,23 @@ const SubmitTool = () => {
                     onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
                     placeholder="https://example.com"
                     required
-                    className="glass-card border-white/20 focus:border-blue-400 transition-colors"
+                    className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
                   />
                 </div>
 
                 {/* Category */}
                 <div className="space-y-2">
-                  <Label htmlFor="category" className="text-gray-700 dark:text-gray-300 font-medium">Category *</Label>
+                  <Label htmlFor="category" className="ibm-plex-serif-medium text-black dark:text-white">Category *</Label>
                   <Select
                     value={formData.category_id}
                     onValueChange={(value) => setFormData(prev => ({ ...prev, category_id: value }))}
                   >
-                    <SelectTrigger className="glass-card border-white/20 focus:border-blue-400 transition-colors">
+                    <SelectTrigger className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
-                    <SelectContent className="glass border-white/20">
+                    <SelectContent className="bg-white dark:bg-black border-gray-300 dark:border-gray-700">
                       {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
+                        <SelectItem key={category.id} value={category.id} className="ibm-plex-serif-regular">
                           {category.name}
                         </SelectItem>
                       ))}
@@ -247,38 +248,38 @@ const SubmitTool = () => {
 
                 {/* Pricing */}
                 <div className="space-y-2">
-                  <Label htmlFor="pricing" className="text-gray-700 dark:text-gray-300 font-medium">Pricing Model *</Label>
+                  <Label htmlFor="pricing" className="ibm-plex-serif-medium text-black dark:text-white">Pricing Model *</Label>
                   <Select
                     value={formData.pricing}
                     onValueChange={(value) => setFormData(prev => ({ ...prev, pricing: value }))}
                   >
-                    <SelectTrigger className="glass-card border-white/20 focus:border-blue-400 transition-colors">
+                    <SelectTrigger className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white">
                       <SelectValue placeholder="Select pricing model" />
                     </SelectTrigger>
-                    <SelectContent className="glass border-white/20">
-                      <SelectItem value="free">Free</SelectItem>
-                      <SelectItem value="freemium">Freemium</SelectItem>
-                      <SelectItem value="paid">Paid</SelectItem>
+                    <SelectContent className="bg-white dark:bg-black border-gray-300 dark:border-gray-700">
+                      <SelectItem value="free" className="ibm-plex-serif-regular">Free</SelectItem>
+                      <SelectItem value="freemium" className="ibm-plex-serif-regular">Freemium</SelectItem>
+                      <SelectItem value="paid" className="ibm-plex-serif-regular">Paid</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {/* Use Case */}
                 <div className="space-y-2">
-                  <Label htmlFor="use_case" className="text-gray-700 dark:text-gray-300 font-medium">Use Case</Label>
+                  <Label htmlFor="use_case" className="ibm-plex-serif-medium text-black dark:text-white">Use Case</Label>
                   <Textarea
                     id="use_case"
                     value={formData.use_case}
                     onChange={(e) => setFormData(prev => ({ ...prev, use_case: e.target.value }))}
                     placeholder="Describe the main use cases and who would benefit from this tool..."
                     rows={3}
-                    className="glass-card border-white/20 focus:border-blue-400 transition-colors"
+                    className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
                   />
                 </div>
 
                 {/* Tags */}
                 <div className="space-y-2">
-                  <Label htmlFor="tags" className="text-gray-700 dark:text-gray-300 font-medium">Tags</Label>
+                  <Label htmlFor="tags" className="ibm-plex-serif-medium text-black dark:text-white">Tags</Label>
                   <div className="flex gap-2">
                     <Input
                       id="tags"
@@ -287,13 +288,13 @@ const SubmitTool = () => {
                       onChange={(e) => setNewTag(e.target.value)}
                       placeholder="Add a tag"
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                      className="glass-card border-white/20 focus:border-blue-400 transition-colors"
+                      className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
                     />
                     <Button 
                       type="button" 
                       onClick={addTag} 
                       size="sm"
-                      className="gradient-cyber text-white hover:opacity-90 transition-opacity"
+                      className="ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -301,7 +302,7 @@ const SubmitTool = () => {
                   {formData.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                       {formData.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="glass-card border-white/20 flex items-center gap-1">
+                        <Badge key={tag} variant="secondary" className="ibm-plex-serif-regular bg-gray-100 dark:bg-gray-800 text-black dark:text-white flex items-center gap-1">
                           {tag}
                           <button
                             type="button"
@@ -320,16 +321,16 @@ const SubmitTool = () => {
                 <Button 
                   type="submit" 
                   disabled={loading} 
-                  className="w-full gradient-ai text-white hover:opacity-90 transition-opacity py-3 text-lg font-medium animate-pulse-glow"
+                  className="w-full ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors py-3 text-lg"
                 >
                   {loading ? (
                     <>
-                      <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-4 h-4 mr-2 border-2 border-white dark:border-black border-t-transparent rounded-full animate-spin"></div>
                       Submitting...
                     </>
                   ) : (
                     <>
-                      <Zap className="w-5 h-5 mr-2" />
+                      <Brain className="w-5 h-5 mr-2" />
                       Submit Tool
                     </>
                   )}
