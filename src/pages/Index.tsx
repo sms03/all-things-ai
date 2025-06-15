@@ -29,11 +29,13 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen neural-bg">
         <Navigation />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="text-lg">Loading AI tools...</div>
+        <div className="flex items-center justify-center min-h-screen pt-20">
+          <div className="text-center glass-card rounded-2xl p-8 animate-pulse-glow">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-spin"></div>
+            <div className="text-lg font-medium text-gray-700 dark:text-gray-300">Loading AI tools...</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">Initializing neural networks</div>
           </div>
         </div>
       </div>
@@ -41,20 +43,27 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen neural-bg">
       <Navigation />
-      <Hero />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <FilterBar
-          categories={categoryOptions}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedPricing={selectedPricing}
-          setSelectedPricing={setSelectedPricing}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-        <ToolsGrid tools={filteredTools} />
+      {/* Add top padding to account for fixed navbar */}
+      <div className="pt-24">
+        <Hero />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="glass-card rounded-2xl p-6 mb-8 animate-slide-down">
+            <FilterBar
+              categories={categoryOptions}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              selectedPricing={selectedPricing}
+              setSelectedPricing={setSelectedPricing}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
+          </div>
+          <div className="animate-slide-up">
+            <ToolsGrid tools={filteredTools} />
+          </div>
+        </div>
       </div>
     </div>
   );
