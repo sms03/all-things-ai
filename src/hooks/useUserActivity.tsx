@@ -35,7 +35,14 @@ export const useUserActivity = () => {
         .limit(20);
 
       if (error) throw error;
-      setRecentActivities(data || []);
+      
+      // Cast the activity_type to the correct type
+      const typedData = (data || []).map(activity => ({
+        ...activity,
+        activity_type: activity.activity_type as UserActivity['activity_type']
+      }));
+      
+      setRecentActivities(typedData);
     } catch (error) {
       console.error('Error fetching activities:', error);
     } finally {

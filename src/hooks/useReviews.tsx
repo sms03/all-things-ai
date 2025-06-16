@@ -13,10 +13,7 @@ export interface Review {
   helpful_count: number;
   created_at: string;
   updated_at: string;
-  profiles?: {
-    full_name?: string;
-    email?: string;
-  };
+  user_email?: string;
 }
 
 export interface ReviewVote {
@@ -49,13 +46,7 @@ export const useReviews = (toolId?: string) => {
     try {
       const { data, error } = await supabase
         .from('reviews')
-        .select(`
-          *,
-          profiles (
-            full_name,
-            email
-          )
-        `)
+        .select('*')
         .eq('tool_id', toolId)
         .order('helpful_count', { ascending: false })
         .order('created_at', { ascending: false });
