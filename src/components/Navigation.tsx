@@ -1,149 +1,212 @@
 
 import { useState } from 'react';
-import { Menu, X, Search, Scale, User, BookOpen, Plus, LogOut } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { Link, useLocation } from 'react-router-dom';
+import { Button } from '@/components/Button';
+import { Menu, X, BarChart3, Plus, Users, Settings, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const { user } = useAuth();
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      toast({
+        title: "Signed out successfully",
+        description: "You have been logged out of your account",
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign out",
+        variant: "destructive",
+      });
+    }
   };
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl dark:bg-black/95 border-b border-gray-100/20 dark:border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100/20 dark:bg-black/90 dark:border-white/10">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-2xl flex items-center justify-center shadow-lg">
-              <Search className="w-5 h-5 text-white dark:text-gray-900" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+              <span className="text-white font-bold text-lg">A</span>
             </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
-              AI Tools Hub
+            <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent tracking-tight">
+              AI Tools Directory
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              to="/" 
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
-            >
-              Browse Tools
+          <div className="hidden md:flex items-center space-x-2">
+            <Link to="/">
+              <Button 
+                variant={isActive('/') ? "primary" : "ghost"}
+                className="font-medium"
+              >
+                Discover
+              </Button>
+            </Link>
+            <Link to="/comparisons">
+              <Button 
+                variant={isActive('/comparisons') ? "primary" : "ghost"}
+                className="font-medium"
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Compare
+              </Button>
             </Link>
             {user && (
-              <Link 
-                to="/comparisons" 
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium flex items-center space-x-1"
-              >
-                <Scale className="w-4 h-4" />
-                <span>Comparisons</span>
+              <Link to="/analytics">
+                <Button 
+                  variant={isActive('/analytics') ? "primary" : "ghost"}
+                  className="font-medium"
+                >
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  Analytics
+                </Button>
               </Link>
             )}
-            <Link 
-              to="/submit-tool" 
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium flex items-center space-x-1"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Submit Tool</span>
+            <Link to="/submit">
+              <Button 
+                variant={isActive('/submit') ? "primary" : "ghost"}
+                className="font-medium"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Submit Tool
+              </Button>
             </Link>
           </div>
 
-          {/* User Menu */}
-          <div className="flex items-center space-x-4">
+          {/* User Actions */}
+          <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar>
-                      <AvatarFallback>
-                        {user.email?.charAt(0).toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
+              <div className="flex items-center space-x-2">
+                <Link to="/profile">
+                  <Button 
+                    variant={isActive('/profile') ? "primary" : "ghost"}
+                    size="sm"
+                    className="font-medium"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Profile
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user.email}</p>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="flex items-center">
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/comparisons" className="flex items-center">
-                      <Scale className="mr-2 h-4 w-4" />
-                      <span>My Comparisons</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className="font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
             ) : (
               <Link to="/auth">
-                <Button variant="default" className="rounded-full">
+                <Button variant="primary" className="font-medium">
                   Sign In
                 </Button>
               </Link>
             )}
-
-            {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              className="md:hidden"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            ) : (
+              <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            )}
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden pb-6 border-t border-gray-100/20 dark:border-white/10 mt-4 pt-4">
-            <div className="flex flex-col space-y-4">
-              <Link 
-                to="/" 
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                Browse Tools
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-6 border-t border-gray-100/20 dark:border-white/10">
+            <div className="space-y-3">
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
+                <Button 
+                  variant={isActive('/') ? "primary" : "ghost"}
+                  className="w-full justify-start font-medium"
+                >
+                  Discover
+                </Button>
+              </Link>
+              <Link to="/comparisons" onClick={() => setIsMenuOpen(false)}>
+                <Button 
+                  variant={isActive('/comparisons') ? "primary" : "ghost"}
+                  className="w-full justify-start font-medium"
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Compare
+                </Button>
               </Link>
               {user && (
-                <Link 
-                  to="/comparisons" 
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium flex items-center space-x-1"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Scale className="w-4 h-4" />
-                  <span>Comparisons</span>
+                <Link to="/analytics" onClick={() => setIsMenuOpen(false)}>
+                  <Button 
+                    variant={isActive('/analytics') ? "primary" : "ghost"}
+                    className="w-full justify-start font-medium"
+                  >
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    Analytics
+                  </Button>
                 </Link>
               )}
-              <Link 
-                to="/submit-tool" 
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium flex items-center space-x-1"
-                onClick={() => setIsOpen(false)}
-              >
-                <Plus className="w-4 h-4" />
-                <span>Submit Tool</span>
+              <Link to="/submit" onClick={() => setIsMenuOpen(false)}>
+                <Button 
+                  variant={isActive('/submit') ? "primary" : "ghost"}
+                  className="w-full justify-start font-medium"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Submit Tool
+                </Button>
               </Link>
+              
+              <div className="pt-4 border-t border-gray-100/20 dark:border-white/10">
+                {user ? (
+                  <div className="space-y-3">
+                    <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                      <Button 
+                        variant={isActive('/profile') ? "primary" : "ghost"}
+                        className="w-full justify-start font-medium"
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        Profile
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full justify-start font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="primary" className="w-full font-medium">
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         )}

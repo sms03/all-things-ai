@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Heart, Star, Calendar, User, Tag } from 'lucide-react';
@@ -9,6 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import Navigation from '@/components/Navigation';
 import { Background } from '@/components/Background';
 import Reviews from '@/components/Reviews';
@@ -37,6 +39,7 @@ const ToolDetail = () => {
   const { user } = useAuth();
   const { bookmarkedToolIds, toggleBookmark } = useSupabaseData();
   const { trackActivity } = useUserActivity();
+  const { trackEvent, trackToolClick } = useAnalytics();
   const [tool, setTool] = useState<ToolDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [isTogglingBookmark, setIsTogglingBookmark] = useState(false);
@@ -50,8 +53,9 @@ const ToolDetail = () => {
   useEffect(() => {
     if (tool && user) {
       trackActivity('view_tool', tool.id, { tool_name: tool.name });
+      trackEvent('page_view', { page: 'tool_detail', tool_id: tool.id, tool_name: tool.name });
     }
-  }, [tool, user, trackActivity]);
+  }, [tool, user, trackActivity, trackEvent]);
 
   const fetchToolDetail = async () => {
     try {
@@ -108,6 +112,12 @@ const ToolDetail = () => {
         bookmarked: result 
       });
       
+      await trackEvent('bookmark_added', {
+        tool_id: tool.id,
+        tool_name: tool.name,
+        bookmarked: result
+      });
+      
       toast({
         title: result ? "Bookmarked!" : "Bookmark removed",
         description: result ? "Tool added to your favorites" : "Tool removed from your favorites",
@@ -120,6 +130,13 @@ const ToolDetail = () => {
       });
     }
     setIsTogglingBookmark(false);
+  };
+
+  const handleVisitWebsite = async () => {
+    if (!tool) return;
+    
+    await trackToolClick(tool.id);
+    window.open(tool.website, '_blank');
   };
 
   const getPricingColor = (pricing: string) => {
@@ -230,7 +247,7 @@ const ToolDetail = () => {
                   <Button
                     size="lg"
                     className="h-12 px-8 font-medium rounded-full transition-all duration-300 hover:scale-105"
-                    onClick={() => window.open(tool.website, '_blank')}
+                    onClick={handleVisitWebsite}
                   >
                     <ExternalLink className="w-5 h-5 mr-2" />
                     Visit Website

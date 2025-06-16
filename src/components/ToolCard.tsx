@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ExternalLink, Star } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/Button';
 import { Link } from 'react-router-dom';
@@ -18,6 +19,7 @@ interface ToolCardProps {
 const ToolCard = ({ tool, index }: ToolCardProps) => {
   const { user } = useAuth();
   const { bookmarkedToolIds, toggleBookmark } = useSupabaseData();
+  const { trackEvent, trackToolClick } = useAnalytics();
   const [isTogglingBookmark, setIsTogglingBookmark] = useState(false);
 
   const isBookmarked = bookmarkedToolIds.has(tool.id);
@@ -39,6 +41,13 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
     const result = await toggleBookmark(tool.id);
     
     if (result !== null) {
+      // Track bookmark event
+      await trackEvent('bookmark_added', { 
+        tool_id: tool.id,
+        tool_name: tool.name,
+        bookmarked: result 
+      });
+
       toast({
         title: result ? "Bookmarked!" : "Bookmark removed",
         description: result ? "Tool added to your favorites" : "Tool removed from your favorites",
@@ -53,10 +62,19 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
     setIsTogglingBookmark(false);
   };
 
-  const handleVisitWebsite = (e: React.MouseEvent) => {
+  const handleVisitWebsite = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Track tool click
+    await trackToolClick(tool.id);
+    
     window.open(tool.website, '_blank');
+  };
+
+  const handleCardClick = async () => {
+    // Track tool view
+    await trackToolClick(tool.id);
   };
 
   const getPricingColor = (pricing: string) => {
@@ -69,7 +87,7 @@ const ToolCard = ({ tool, index }: ToolCardProps) => {
   };
 
   return (
-    <Link to={`/tool/${tool.id}`} className="block">
+    <Link to={`/tool/${tool.id}`} className="block" onClick={handleCardClick}>
       <Card 
         className="group bg-white/80 backdrop-blur-xl dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all duration-500 hover:scale-[1.02] animate-fade-in overflow-hidden cursor-pointer"
         style={{

@@ -1,20 +1,40 @@
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Hero from '@/components/Hero';
 import ToolsGrid from '@/components/ToolsGrid';
 import FilterBar from '@/components/FilterBar';
 import Navigation from '@/components/Navigation';
+import RecommendationsSection from '@/components/RecommendationsSection';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { Background } from '@/components/Background';
 
 const Index = () => {
   const { tools, categories, loading } = useSupabaseData();
+  const { trackEvent } = useAnalytics();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPricing, setSelectedPricing] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Track page view
+  useEffect(() => {
+    trackEvent('page_view', { page: 'home' });
+  }, [trackEvent]);
+
+  // Track filter applications
+  useEffect(() => {
+    if (selectedCategory !== 'all' || selectedPricing !== 'all' || selectedTags.length > 0) {
+      trackEvent('filter_applied', {
+        category: selectedCategory,
+        pricing: selectedPricing,
+        tags: selectedTags,
+        searchQuery
+      });
+    }
+  }, [selectedCategory, selectedPricing, selectedTags, searchQuery, trackEvent]);
 
   // Update categories dynamically from Supabase
   const categoryOptions = [
@@ -101,6 +121,12 @@ const Index = () => {
       <Navigation />
       <div className="pt-20">
         <Hero />
+        
+        {/* Recommendations Section */}
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-20">
+          <RecommendationsSection />
+        </div>
+
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-32">
           <div className="bg-white/80 backdrop-blur-xl dark:bg-black/80 border border-gray-100/30 dark:border-white/10 rounded-3xl shadow-2xl animate-fade-in mb-20">
             <FilterBar
