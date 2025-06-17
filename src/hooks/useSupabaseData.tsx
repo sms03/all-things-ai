@@ -17,6 +17,8 @@ export interface Tool {
   submitted_by?: string;
   created_at: string;
   updated_at: string;
+  status: 'pending' | 'approved' | 'rejected' | 'discontinued';
+  last_checked?: string;
 }
 
 export interface Category {
@@ -51,7 +53,7 @@ export const useSupabaseData = () => {
       if (categoriesError) throw categoriesError;
       setCategories(categoriesData || []);
 
-      // Fetch tools with categories
+      // Fetch tools with categories (only approved tools for regular users)
       const { data: toolsData, error: toolsError } = await supabase
         .from('tools')
         .select(`

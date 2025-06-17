@@ -244,6 +244,50 @@ export type Database = {
           },
         ]
       }
+      tool_analytics: {
+        Row: {
+          bookmarks_count: number | null
+          clicks_count: number | null
+          created_at: string
+          date: string
+          id: string
+          searches_count: number | null
+          tool_id: string
+          updated_at: string
+          views_count: number | null
+        }
+        Insert: {
+          bookmarks_count?: number | null
+          clicks_count?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          searches_count?: number | null
+          tool_id: string
+          updated_at?: string
+          views_count?: number | null
+        }
+        Update: {
+          bookmarks_count?: number | null
+          clicks_count?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          searches_count?: number | null
+          tool_id?: string
+          updated_at?: string
+          views_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_analytics_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tool_comparisons: {
         Row: {
           created_at: string
@@ -271,6 +315,47 @@ export type Database = {
         }
         Relationships: []
       }
+      tool_moderation: {
+        Row: {
+          created_at: string
+          id: string
+          moderated_at: string
+          moderator_id: string | null
+          notes: string | null
+          previous_status: Database["public"]["Enums"]["tool_status"] | null
+          status: Database["public"]["Enums"]["tool_status"]
+          tool_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          moderated_at?: string
+          moderator_id?: string | null
+          notes?: string | null
+          previous_status?: Database["public"]["Enums"]["tool_status"] | null
+          status?: Database["public"]["Enums"]["tool_status"]
+          tool_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          moderated_at?: string
+          moderator_id?: string | null
+          notes?: string | null
+          previous_status?: Database["public"]["Enums"]["tool_status"] | null
+          status?: Database["public"]["Enums"]["tool_status"]
+          tool_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_moderation_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tools: {
         Row: {
           category_id: string
@@ -278,9 +363,11 @@ export type Database = {
           description: string
           featured: boolean | null
           id: string
+          last_checked: string | null
           name: string
           pricing: string
           rating: number | null
+          status: Database["public"]["Enums"]["tool_status"]
           submitted_by: string | null
           tags: string[] | null
           trending: boolean | null
@@ -293,9 +380,11 @@ export type Database = {
           description: string
           featured?: boolean | null
           id?: string
+          last_checked?: string | null
           name: string
           pricing: string
           rating?: number | null
+          status?: Database["public"]["Enums"]["tool_status"]
           submitted_by?: string | null
           tags?: string[] | null
           trending?: boolean | null
@@ -308,9 +397,11 @@ export type Database = {
           description?: string
           featured?: boolean | null
           id?: string
+          last_checked?: string | null
           name?: string
           pricing?: string
           rating?: number | null
+          status?: Database["public"]["Enums"]["tool_status"]
           submitted_by?: string | null
           tags?: string[] | null
           trending?: boolean | null
@@ -395,6 +486,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -420,6 +535,13 @@ export type Database = {
         Args: { "": unknown }
         Returns: unknown
       }
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
       set_limit: {
         Args: { "": number }
         Returns: number
@@ -432,9 +554,14 @@ export type Database = {
         Args: { "": string }
         Returns: string[]
       }
+      update_tool_analytics: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      tool_status: "pending" | "approved" | "rejected" | "discontinued"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -549,6 +676,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      tool_status: ["pending", "approved", "rejected", "discontinued"],
+    },
   },
 } as const
