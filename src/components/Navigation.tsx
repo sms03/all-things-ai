@@ -1,16 +1,26 @@
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { gsap } from 'gsap';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoles } from '@/hooks/useRoles';
-import { User, LogOut, Settings, Menu, X, Shield } from 'lucide-react';
 
 const Navigation = () => {
   const { user, signOut } = useAuth();
   const { isModerator } = useRoles();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navRef = useRef<HTMLNavElement>(null);
+
+  useEffect(() => {
+    if (navRef.current) {
+      gsap.fromTo(navRef.current, 
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      );
+    }
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();
@@ -18,26 +28,27 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Comparisons', path: '/comparisons' },
-    { name: 'Submit Tool', path: '/submit' },
+    { name: 'Home', path: '/', icon: 'ri-home-4-line' },
+    { name: 'Explore', path: '/explore', icon: 'ri-compass-3-line' },
+    { name: 'Comparisons', path: '/comparisons', icon: 'ri-scales-3-line' },
+    { name: 'Submit Tool', path: '/submit', icon: 'ri-add-circle-line' },
   ];
 
   // Add admin link for moderators and admins
   if (user && isModerator()) {
-    navItems.push({ name: 'Admin', path: '/admin' });
+    navItems.push({ name: 'Admin', path: '/admin', icon: 'ri-shield-user-line' });
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl dark:bg-gray-900/95 border-b border-gray-100/20 dark:border-gray-800/20 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+    <nav ref={navRef} className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-6">
+      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-full shadow-2xl">
+        <div className="flex items-center justify-between px-8 py-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-4 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
-              <span className="text-white dark:text-gray-900 text-xl font-bold ibm-plex-serif-bold">A</span>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <i className="ri-robot-2-fill text-white text-lg"></i>
             </div>
-            <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight ibm-plex-serif-bold">
+            <span className="text-xl font-bold text-white tracking-tight hidden sm:block">
               A2Z AI Tools
             </span>
           </Link>
@@ -48,13 +59,13 @@ const Navigation = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-4 py-2 rounded-xl text-base font-medium transition-all duration-200 flex items-center space-x-2 ibm-plex-serif-medium ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center space-x-2 hover:scale-105 ${
                   location.pathname === item.path
-                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    ? 'bg-white/20 text-white shadow-lg backdrop-blur-xl'
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
                 }`}
               >
-                {item.name === 'Admin' && <Shield className="w-4 h-4" />}
+                <i className={`${item.icon} text-base`}></i>
                 <span>{item.name}</span>
               </Link>
             ))}
@@ -63,21 +74,31 @@ const Navigation = () => {
           {/* Desktop Auth */}
           <div className="hidden lg:flex items-center space-x-3">
             {user ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
                 <Link to="/profile">
-                  <Button variant="ghost" size="sm" className="flex items-center space-x-2 ibm-plex-serif-medium px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
-                    <User className="w-4 h-4" />
-                    <span>Profile</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white/70 hover:text-white hover:bg-white/10 rounded-full px-4 py-2 transition-all duration-300 hover:scale-105"
+                  >
+                    <i className="ri-user-line mr-2"></i>
+                    Profile
                   </Button>
                 </Link>
-                <Button onClick={handleSignOut} variant="ghost" size="sm" className="flex items-center space-x-2 ibm-plex-serif-medium px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out</span>
+                <Button 
+                  onClick={handleSignOut} 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-white/70 hover:text-white hover:bg-white/10 rounded-full px-4 py-2 transition-all duration-300 hover:scale-105"
+                >
+                  <i className="ri-logout-box-line mr-2"></i>
+                  Sign Out
                 </Button>
               </div>
             ) : (
               <Link to="/auth">
-                <Button className="ibm-plex-serif-medium bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 px-6 py-2 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
+                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0">
+                  <i className="ri-login-box-line mr-2"></i>
                   Sign In
                 </Button>
               </Link>
@@ -90,49 +111,50 @@ const Navigation = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+              className="p-3 rounded-full text-white hover:bg-white/10 transition-all duration-300"
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <i className={`${isMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-xl`}></i>
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-100/20 dark:border-gray-800/20 py-6 space-y-2 bg-white/95 backdrop-blur-xl dark:bg-gray-900/95">
+          <div className="lg:hidden border-t border-white/20 px-8 py-6 space-y-4 bg-white/5 backdrop-blur-xl rounded-b-3xl">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-xl text-lg font-medium transition-all duration-200 flex items-center space-x-3 ibm-plex-serif-medium ${
+                className={`block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 flex items-center space-x-3 ${
                   location.pathname === item.path
-                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    ? 'bg-white/20 text-white shadow-lg'
+                    : 'text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                {item.name === 'Admin' && <Shield className="w-5 h-5" />}
+                <i className={`${item.icon} text-lg`}></i>
                 <span>{item.name}</span>
               </Link>
             ))}
             
-            <div className="pt-4 border-t border-gray-100/20 dark:border-gray-800/20 space-y-2">
+            <div className="pt-4 border-t border-white/20 space-y-3">
               {user ? (
                 <>
                   <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start px-4 py-3 rounded-xl ibm-plex-serif-medium text-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
-                      <User className="w-5 h-5 mr-3" />
+                    <Button variant="ghost" className="w-full justify-start px-4 py-3 rounded-2xl text-base text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300">
+                      <i className="ri-user-line mr-3 text-lg"></i>
                       Profile
                     </Button>
                   </Link>
-                  <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 rounded-xl ibm-plex-serif-medium text-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
-                    <LogOut className="w-5 h-5 mr-3" />
+                  <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 rounded-2xl text-base text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300">
+                    <i className="ri-logout-box-line mr-3 text-lg"></i>
                     Sign Out
                   </Button>
                 </>
               ) : (
                 <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full ibm-plex-serif-medium bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 py-3 rounded-xl shadow-lg transition-all duration-200">
+                  <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 rounded-2xl shadow-lg transition-all duration-300 border-0">
+                    <i className="ri-login-box-line mr-2"></i>
                     Sign In
                   </Button>
                 </Link>
