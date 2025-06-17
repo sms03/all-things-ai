@@ -29,29 +29,29 @@ const Navigation = () => {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl dark:bg-black/95 border-b border-gray-100/20 dark:border-white/10 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl dark:bg-gray-900/95 border-b border-gray-100/20 dark:border-gray-800/20 shadow-lg">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white dark:text-gray-900 text-lg font-bold">A</span>
+          <Link to="/" className="flex items-center space-x-4 group">
+            <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
+              <span className="text-white dark:text-gray-900 text-xl font-bold ibm-plex-serif-bold">A</span>
             </div>
-            <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight ibm-plex-serif-bold">
               A2Z AI Tools
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-2">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-base font-medium transition-colors duration-300 flex items-center space-x-1 ${
+                className={`px-4 py-2 rounded-xl text-base font-medium transition-all duration-200 flex items-center space-x-2 ibm-plex-serif-medium ${
                   location.pathname === item.path
-                    ? 'text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50'
                 }`}
               >
                 {item.name === 'Admin' && <Shield className="w-4 h-4" />}
@@ -61,23 +61,23 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3">
             {user ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <Link to="/profile">
-                  <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                  <Button variant="ghost" size="sm" className="flex items-center space-x-2 ibm-plex-serif-medium px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
                     <User className="w-4 h-4" />
                     <span>Profile</span>
                   </Button>
                 </Link>
-                <Button onClick={handleSignOut} variant="ghost" size="sm" className="flex items-center space-x-2">
+                <Button onClick={handleSignOut} variant="ghost" size="sm" className="flex items-center space-x-2 ibm-plex-serif-medium px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
                 </Button>
               </div>
             ) : (
               <Link to="/auth">
-                <Button variant="default" size="sm">
+                <Button className="ibm-plex-serif-medium bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 px-6 py-2 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
                   Sign In
                 </Button>
               </Link>
@@ -85,12 +85,12 @@ const Navigation = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2"
+              className="p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </Button>
@@ -99,16 +99,16 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-100/20 dark:border-white/10 py-6 space-y-4 bg-white/95 backdrop-blur-xl dark:bg-black/95">
+          <div className="lg:hidden border-t border-gray-100/20 dark:border-gray-800/20 py-6 space-y-2 bg-white/95 backdrop-blur-xl dark:bg-gray-900/95">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`block text-lg font-medium transition-colors duration-300 flex items-center space-x-2 ${
+                className={`block px-4 py-3 rounded-xl text-lg font-medium transition-all duration-200 flex items-center space-x-3 ibm-plex-serif-medium ${
                   location.pathname === item.path
-                    ? 'text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400'
+                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
                 }`}
               >
                 {item.name === 'Admin' && <Shield className="w-5 h-5" />}
@@ -116,23 +116,23 @@ const Navigation = () => {
               </Link>
             ))}
             
-            <div className="pt-4 border-t border-gray-100/20 dark:border-white/10">
+            <div className="pt-4 border-t border-gray-100/20 dark:border-gray-800/20 space-y-2">
               {user ? (
-                <div className="space-y-4">
+                <>
                   <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" size="sm" className="w-full justify-start">
-                      <User className="w-4 h-4 mr-2" />
+                    <Button variant="ghost" className="w-full justify-start px-4 py-3 rounded-xl ibm-plex-serif-medium text-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
+                      <User className="w-5 h-5 mr-3" />
                       Profile
                     </Button>
                   </Link>
-                  <Button onClick={handleSignOut} variant="ghost" size="sm" className="w-full justify-start">
-                    <LogOut className="w-4 h-4 mr-2" />
+                  <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 rounded-xl ibm-plex-serif-medium text-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
+                    <LogOut className="w-5 h-5 mr-3" />
                     Sign Out
                   </Button>
-                </div>
+                </>
               ) : (
                 <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="default" size="sm" className="w-full">
+                  <Button className="w-full ibm-plex-serif-medium bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 py-3 rounded-xl shadow-lg transition-all duration-200">
                     Sign In
                   </Button>
                 </Link>
