@@ -2,227 +2,260 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import Navigation from '@/components/Navigation';
-import { Background } from '@/components/Background';
-import ToolComparison from '@/components/ToolComparison';
-import { useAuth } from '@/hooks/useAuth';
-import { useComparisons } from '@/hooks/useComparisons';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
-import { toast } from '@/hooks/use-toast';
+import { useComparisons } from '@/hooks/useComparisons';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 const Comparisons = () => {
-  const { user } = useAuth();
-  const { tools } = useSupabaseData();
-  const { comparisons, loading, deleteComparison } = useComparisons();
-  const [selectedComparison, setSelectedComparison] = useState<string | null>(null);
-  const [showNewComparison, setShowNewComparison] = useState(false);
+  const { tools, categories } = useSupabaseData();
+  const { comparisons, addToComparison, removeFromComparison, clearComparisons } = useComparisons();
+  const { trackEvent } = useAnalytics();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    trackEvent('page_view', { page: 'comparisons' });
+  }, [trackEvent]);
+
+  useEffect(() => {
     if (pageRef.current) {
-      gsap.fromTo(pageRef.current.children, 
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }
+      gsap.fromTo(pageRef.current.children,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
       );
     }
   }, []);
 
-  const handleDeleteComparison = async (comparisonId: string) => {
-    const success = await deleteComparison(comparisonId);
-    if (success) {
-      toast({
-        title: "Comparison deleted",
-        description: "Your comparison has been removed",
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to delete comparison",
-        variant: "destructive",
-      });
-    }
+  const filteredTools = tools.filter(tool => {
+    const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         tool.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = !selectedCategory || tool.category_id === selectedCategory;
+    const notInComparison = !comparisons.some(comp => comp.id === tool.id);
+    
+    return matchesSearch && matchesCategory && notInComparison;
+  });
+
+  const handleAddToComparison = (tool: any) => {
+    addToComparison(tool);
+    trackEvent('tool_added_to_comparison', { tool_id: tool.id });
   };
 
-  const getComparisonTools = (toolIds: string[]) => {
-    return tools.filter(tool => toolIds.includes(tool.id));
+  const handleRemoveFromComparison = (toolId: string) => {
+    removeFromComparison(toolId);
+    trackEvent('tool_removed_from_comparison', { tool_id: toolId });
   };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen">
-        <Background variant="gradient" />
-        <Navigation />
-        <div className="pt-32 pb-20">
-          <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
-            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl">
-              <CardContent className="p-16">
-                <i className="ri-scales-3-line text-6xl text-white/60 mb-8"></i>
-                <h1 className="text-4xl font-bold text-white mb-6">
-                  Tool Comparisons
-                </h1>
-                <p className="text-white/70 text-lg mb-8 max-w-md mx-auto">
-                  Please sign in to view and manage your tool comparisons
-                </p>
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0">
-                  <i className="ri-login-box-line mr-2"></i>
-                  Sign In to Continue
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (selectedComparison || showNewComparison) {
-    const comparison = comparisons.find(c => c.id === selectedComparison);
-    const comparisonTools = comparison ? getComparisonTools(comparison.tool_ids) : [];
-
-    return (
-      <div className="min-h-screen">
-        <Background variant="gradient" />
-        <Navigation />
-        <div className="pt-32 pb-20">
-          <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
-            <ToolComparison
-              initialTools={comparisonTools}
-              onClose={() => {
-                setSelectedComparison(null);
-                setShowNewComparison(false);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen">
-      <Background variant="gradient" />
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
       
-      <div className="pt-32 pb-20">
-        <div ref={pageRef} className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="pt-24 pb-16">
+        <div ref={pageRef} className="max-w-7xl mx-auto px-6">
           {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent mb-6 tracking-tight">
-              <i className="ri-scales-3-line mr-4"></i>
-              My Comparisons
-            </h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto font-light mb-8">
-              Manage your saved tool comparisons and create new ones
-            </p>
-            <Button
-              onClick={() => setShowNewComparison(true)}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0"
-            >
-              <i className="ri-add-line mr-2"></i>
-              New Comparison
-            </Button>
+          <div className="mb-12">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                Compare AI Tools
+              </h1>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Select up to 3 AI tools to compare their features, pricing, and capabilities side by side
+              </p>
+            </div>
           </div>
 
-          {loading ? (
-            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl">
-              <CardContent className="p-16 text-center">
-                <div className="w-12 h-12 mx-auto mb-6 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
-                <p className="text-white/70 text-lg">Loading comparisons...</p>
-              </CardContent>
-            </Card>
-          ) : comparisons.length === 0 ? (
-            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl">
-              <CardContent className="p-16 text-center">
-                <i className="ri-scales-3-line text-6xl text-white/40 mb-8"></i>
-                <h2 className="text-3xl font-semibold text-white mb-4">
-                  No comparisons yet
-                </h2>
-                <p className="text-white/70 text-lg mb-8 max-w-md mx-auto">
-                  Create your first tool comparison to get started analyzing and comparing AI tools
-                </p>
-                <Button
-                  onClick={() => setShowNewComparison(true)}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0"
-                >
-                  <i className="ri-add-line mr-2"></i>
-                  Create Comparison
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid gap-8">
-              {comparisons.map((comparison) => {
-                const comparisonTools = getComparisonTools(comparison.tool_ids);
-                
-                return (
-                  <Card
-                    key={comparison.id}
-                    className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] group"
+          {/* Comparison Section */}
+          {comparisons.length > 0 && (
+            <Card className="mb-12 bg-white border border-gray-200">
+              <CardHeader className="border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl text-gray-900">
+                    Comparison ({comparisons.length}/3)
+                  </CardTitle>
+                  <Button
+                    onClick={clearComparisons}
+                    variant="outline"
+                    className="text-gray-600 hover:text-gray-900"
                   >
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle className="text-2xl font-semibold text-white flex items-center">
-                            <i className="ri-file-list-3-line mr-3 text-blue-400"></i>
-                            {comparison.name}
-                          </CardTitle>
-                          <p className="text-white/60 mt-2 flex items-center">
-                            <i className="ri-calendar-line mr-2"></i>
-                            Created {new Date(comparison.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setSelectedComparison(comparison.id)}
-                            className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/50 rounded-full px-6 py-2 transition-all duration-300 hover:scale-105"
-                          >
-                            <i className="ri-eye-line mr-2"></i>
-                            View
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteComparison(comparison.id)}
-                            className="text-red-400 hover:text-red-300 hover:bg-red-500/20 rounded-full p-3 transition-all duration-300 hover:scale-105"
-                          >
-                            <i className="ri-delete-bin-line"></i>
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center space-x-4">
-                        <span className="text-white/80 font-medium flex items-center">
-                          <i className="ri-apps-line mr-2"></i>
-                          Comparing:
-                        </span>
-                        <div className="flex flex-wrap gap-3">
-                          {comparisonTools.map((tool) => (
-                            <Badge
-                              key={tool.id}
-                              variant="outline"
-                              className="bg-white/10 border-white/30 text-white flex items-center space-x-2 px-3 py-1 rounded-full"
+                    <i className="ri-delete-bin-line mr-2"></i>
+                    Clear All
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {comparisons.map((tool) => (
+                    <div key={tool.id} className="relative">
+                      <Card className="bg-gray-50 border border-gray-200">
+                        <CardHeader className="pb-4">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle className="text-lg text-gray-900">{tool.name}</CardTitle>
+                              <CardDescription className="text-sm text-gray-600 mt-1">
+                                {tool.description?.substring(0, 100)}...
+                              </CardDescription>
+                            </div>
+                            <Button
+                              onClick={() => handleRemoveFromComparison(tool.id)}
+                              variant="ghost"
+                              size="sm"
+                              className="text-gray-500 hover:text-red-600"
                             >
-                              <div className="w-4 h-4 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">
-                                  {tool.name.charAt(0)}
-                                </span>
-                              </div>
-                              <span>{tool.name}</span>
+                              <i className="ri-close-line"></i>
+                            </Button>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div>
+                            <label className="text-sm font-medium text-gray-700">Pricing</label>
+                            <Badge variant="outline" className={`ml-2 ${
+                              tool.pricing === 'free' ? 'bg-green-50 text-green-700 border-green-200' :
+                              tool.pricing === 'freemium' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                              'bg-purple-50 text-purple-700 border-purple-200'
+                            }`}>
+                              {tool.pricing}
                             </Badge>
-                          ))}
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-700">Rating</label>
+                            <div className="flex items-center mt-1">
+                              <div className="flex items-center">
+                                {[...Array(5)].map((_, i) => (
+                                  <i
+                                    key={i}
+                                    className={`ri-star-${i < Math.floor(tool.rating || 0) ? 'fill' : 'line'} text-yellow-400`}
+                                  ></i>
+                                ))}
+                              </div>
+                              <span className="ml-2 text-sm text-gray-600">
+                                {tool.rating?.toFixed(1) || 'No rating'}
+                              </span>
+                            </div>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-700">Tags</label>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {tool.tags?.slice(0, 3).map((tag) => (
+                                <Badge key={tag} variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          <Button
+                            asChild
+                            variant="outline"
+                            className="w-full"
+                          >
+                            <a
+                              href={tool.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center"
+                            >
+                              <i className="ri-external-link-line mr-2"></i>
+                              Visit Tool
+                            </a>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Search and Filter */}
+          <Card className="mb-8 bg-white border border-gray-200">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="relative">
+                  <i className="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <input
+                    type="text"
+                    placeholder="Search tools..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Available Tools */}
+          <Card className="bg-white border border-gray-200">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-xl text-gray-900">Available Tools</CardTitle>
+              <CardDescription className="text-gray-600">
+                Select tools to add to your comparison (maximum 3 tools)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTools.map((tool) => (
+                  <Card key={tool.id} className="bg-gray-50 border border-gray-200 hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-lg text-gray-900">{tool.name}</CardTitle>
+                      <CardDescription className="text-sm text-gray-600">
+                        {tool.description?.substring(0, 100)}...
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className={`${
+                          tool.pricing === 'free' ? 'bg-green-50 text-green-700 border-green-200' :
+                          tool.pricing === 'freemium' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                          'bg-purple-50 text-purple-700 border-purple-200'
+                        }`}>
+                          {tool.pricing}
+                        </Badge>
+                        <div className="flex items-center">
+                          <i className="ri-star-fill text-yellow-400 text-sm"></i>
+                          <span className="ml-1 text-sm text-gray-600">
+                            {tool.rating?.toFixed(1) || 'No rating'}
+                          </span>
                         </div>
                       </div>
+                      <Button
+                        onClick={() => handleAddToComparison(tool)}
+                        disabled={comparisons.length >= 3}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <i className="ri-add-line mr-2"></i>
+                        Add to Compare
+                      </Button>
                     </CardContent>
                   </Card>
-                );
-              })}
-            </div>
-          )}
+                ))}
+              </div>
+
+              {filteredTools.length === 0 && (
+                <div className="text-center py-12">
+                  <i className="ri-search-line text-4xl text-gray-400 mb-4 block"></i>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No tools found</h3>
+                  <p className="text-gray-600">Try adjusting your search criteria or category filter.</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

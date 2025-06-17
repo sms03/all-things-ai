@@ -40,15 +40,15 @@ const Navigation = () => {
   }
 
   return (
-    <nav ref={navRef} className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-6">
-      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl transition-all duration-300 hover:bg-white/10">
-        <div className="flex items-center justify-between px-6 py-3">
+    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300 animate-pulse">
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <i className="ri-robot-2-fill text-white text-lg"></i>
             </div>
-            <span className="text-xl font-bold text-white tracking-tight hidden sm:block bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            <span className="text-xl font-bold text-gray-900 hidden sm:block">
               A2Z AI Tools
             </span>
           </Link>
@@ -59,30 +59,27 @@ const Navigation = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center space-x-2 hover:scale-105 relative overflow-hidden group ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
                   location.pathname === item.path
-                    ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-white shadow-lg backdrop-blur-xl border border-white/20'
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
               >
-                <i className={`${item.icon} text-base relative z-10`}></i>
-                <span className="relative z-10">{item.name}</span>
-                {location.pathname === item.path && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full animate-pulse"></div>
-                )}
+                <i className={`${item.icon} text-base`}></i>
+                <span>{item.name}</span>
               </Link>
             ))}
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden lg:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center space-x-3">
             {user ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Link to="/profile">
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="text-white/70 hover:text-white hover:bg-white/10 rounded-full px-4 py-2.5 transition-all duration-300 hover:scale-105 border border-transparent hover:border-white/20"
+                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   >
                     <i className="ri-user-line mr-2"></i>
                     Profile
@@ -92,7 +89,7 @@ const Navigation = () => {
                   onClick={handleSignOut} 
                   variant="ghost" 
                   size="sm" 
-                  className="text-white/70 hover:text-white hover:bg-white/10 rounded-full px-4 py-2.5 transition-all duration-300 hover:scale-105 border border-transparent hover:border-white/20"
+                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 >
                   <i className="ri-logout-box-line mr-2"></i>
                   Sign Out
@@ -100,12 +97,9 @@ const Navigation = () => {
               </div>
             ) : (
               <Link to="/auth">
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 relative overflow-hidden group">
-                  <span className="relative z-10 flex items-center">
-                    <i className="ri-login-box-line mr-2"></i>
-                    Sign In
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2">
+                  <i className="ri-login-box-line mr-2"></i>
+                  Sign In
                 </Button>
               </Link>
             )}
@@ -117,49 +111,49 @@ const Navigation = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-3 rounded-full text-white hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/20"
+              className="p-2"
             >
-              <i className={`${isMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-xl transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`}></i>
+              <i className={`${isMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-xl`}></i>
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-white/10 px-6 py-6 space-y-3 bg-white/5 backdrop-blur-xl rounded-b-3xl animate-in fade-in-0 slide-in-from-top-2 duration-300">
+          <div className="lg:hidden border-t border-gray-200 py-4 space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 flex items-center space-x-3 group ${
+                className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors flex items-center space-x-3 ${
                   location.pathname === item.path
-                    ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-white shadow-lg border border-white/20'
-                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}
               >
-                <i className={`${item.icon} text-lg group-hover:scale-110 transition-transform duration-300`}></i>
+                <i className={`${item.icon} text-lg`}></i>
                 <span>{item.name}</span>
               </Link>
             ))}
             
-            <div className="pt-4 border-t border-white/10 space-y-3">
+            <div className="pt-4 border-t border-gray-200 space-y-2">
               {user ? (
                 <>
                   <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start px-4 py-3 rounded-2xl text-base text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/20">
+                    <Button variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                       <i className="ri-user-line mr-3 text-lg"></i>
                       Profile
                     </Button>
                   </Link>
-                  <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 rounded-2xl text-base text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/20">
+                  <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                     <i className="ri-logout-box-line mr-3 text-lg"></i>
                     Sign Out
                   </Button>
                 </>
               ) : (
                 <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 rounded-2xl shadow-lg transition-all duration-300 border-0">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3">
                     <i className="ri-login-box-line mr-2"></i>
                     Sign In
                   </Button>
