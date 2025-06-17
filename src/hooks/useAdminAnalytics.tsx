@@ -46,17 +46,18 @@ export const useAdminAnalytics = () => {
         return acc;
       }, {} as Record<string, number>);
 
-      // Fetch recent analytics data
+      // Fetch recent analytics data (last 30 days)
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const { data: recentAnalytics } = await supabase
         .from('tool_analytics')
         .select(`
           *,
           tools (name)
         `)
-        .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
+        .gte('date', thirtyDaysAgo)
         .order('date', { ascending: false });
 
-      // Calculate totals
+      // Calculate totals from recent analytics
       const totals = (recentAnalytics || []).reduce((acc, record) => {
         acc.views += record.views_count || 0;
         acc.clicks += record.clicks_count || 0;
@@ -64,34 +65,64 @@ export const useAdminAnalytics = () => {
         return acc;
       }, { views: 0, clicks: 0, bookmarks: 0 });
 
-      // Get popular tools (last 7 days)
-      const { data: popularTools } = await supabase
+      // Get popular tools by aggregating last 7 days data
+      const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const { data: weeklyAnalytics } = await supabase
         .from('tool_analytics')
         .select(`
           tool_id,
-          SUM(views_count) as total_views,
-          SUM(clicks_count) as total_clicks,
-          SUM(bookmarks_count) as total_bookmarks,
+          views_count,
+          clicks_count,
+          bookmarks_count,
           tools (name)
         `)
-        .gte('date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
+        .gte('date', sevenDaysAgo)
         .not('tools', 'is', null);
 
-      // Format popular tools
-      const formattedPopularTools = (popularTools || [])
+      // Aggregate data by tool_id
+      const toolEngagement = new Map<string, {
+        tool_id: string;
+        tool_name: string;
+        total_views: number;
+        total_clicks: number;
+        total_bookmarks: number;
+        total_engagement: number;
+      }>();
+
+      (weeklyAnalytics || []).forEach(record => {
+        const toolId = record.tool_id;
+        const existing = toolEngagement.get(toolId) || {
+          tool_id: toolId,
+          tool_name: record.tools?.name || 'Unknown',
+          total_views: 0,
+          total_clicks: 0,
+          total_bookmarks: 0,
+          total_engagement: 0
+        };
+
+        existing.total_views += record.views_count || 0;
+        existing.total_clicks += record.clicks_count || 0;
+        existing.total_bookmarks += record.bookmarks_count || 0;
+        existing.total_engagement = existing.total_views + existing.total_clicks + existing.total_bookmarks;
+
+        toolEngagement.set(toolId, existing);
+      });
+
+      // Convert to array and sort by engagement
+      const formattedPopularTools: ToolAnalytics[] = Array.from(toolEngagement.values())
+        .sort((a, b) => b.total_engagement - a.total_engagement)
+        .slice(0, 10)
         .map(tool => ({
           id: tool.tool_id,
           tool_id: tool.tool_id,
           date: '',
-          views_count: tool.total_views || 0,
-          clicks_count: tool.total_clicks || 0,
-          bookmarks_count: tool.total_bookmarks || 0,
+          views_count: tool.total_views,
+          clicks_count: tool.total_clicks,
+          bookmarks_count: tool.total_bookmarks,
           searches_count: 0,
-          tool_name: tool.tools?.name || 'Unknown',
-          total_engagement: (tool.total_views || 0) + (tool.total_clicks || 0) + (tool.total_bookmarks || 0)
-        }))
-        .sort((a, b) => (b.total_engagement || 0) - (a.total_engagement || 0))
-        .slice(0, 10);
+          tool_name: tool.tool_name,
+          total_engagement: tool.total_engagement
+        }));
 
       // Get recent activity
       const { data: recentActivity } = await supabase
