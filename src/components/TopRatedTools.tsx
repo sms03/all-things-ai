@@ -80,7 +80,7 @@ const TopRatedTools = () => {
           <Link to="/explore">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg h-12 transition-all duration-300 hover:scale-105">
               <Star className="w-5 h-5 mr-2" />
-              Explore All Rated Tools
+              Explore All Tools
             </Button>
           </Link>
         </div>
