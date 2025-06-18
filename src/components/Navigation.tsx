@@ -11,8 +11,8 @@ const Navigation = () => {
   const { isModerator } = useRoles();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
     if (navRef.current) {
       gsap.fromTo(navRef.current, 
@@ -20,6 +20,17 @@ const Navigation = () => {
         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
       );
     }
+  }, []);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSignOut = async () => {
@@ -38,132 +49,146 @@ const Navigation = () => {
   if (user && isModerator()) {
     navItems.push({ name: 'Admin', path: '/admin', icon: 'ri-shield-user-line' });
   }
-
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <>
+      {/* Main Pill Navigation */}      <nav 
+        ref={navRef} 
+        className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
+          isScrolled 
+            ? 'bg-white/95 backdrop-blur-xl shadow-lg border border-gray-200/50' 
+            : 'bg-white/80 backdrop-blur-md shadow-md border border-gray-200/30'
+        } rounded-full`}
+      >
+        <div className="flex items-center px-4 sm:px-6 py-2 max-w-fit mx-auto">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <Link to="/" className="flex items-center space-x-2 mr-6">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-md">
               <i className="ri-robot-2-fill text-white text-lg"></i>
             </div>
-            <span className="text-xl font-bold text-gray-900 hidden sm:block">
+            <span className="text-lg font-bold text-gray-900 hidden sm:block whitespace-nowrap">
               All Things AI
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          {/* Desktop Navigation Pills */}
+          <div className="hidden md:flex items-center space-x-1 mr-6">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
+                className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-2 whitespace-nowrap ${
                   location.pathname === item.path
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/80'
                 }`}
               >
-                <i className={`${item.icon} text-base`}></i>
-                <span>{item.name}</span>
+                <i className={`${item.icon} text-sm`}></i>
+                <span className="hidden lg:block">{item.name}</span>
               </Link>
             ))}
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2">
             {user ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1">
                 <Link to="/profile">
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-100/80 rounded-full px-3 py-2 text-sm"
                   >
-                    <i className="ri-user-line mr-2"></i>
-                    Profile
+                    <i className="ri-user-line text-sm"></i>
+                    <span className="hidden lg:block ml-2">Profile</span>
                   </Button>
                 </Link>
                 <Button 
                   onClick={handleSignOut} 
                   variant="ghost" 
                   size="sm" 
-                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-100/80 rounded-full px-3 py-2 text-sm"
                 >
-                  <i className="ri-logout-box-line mr-2"></i>
-                  Sign Out
+                  <i className="ri-logout-box-line text-sm"></i>
+                  <span className="hidden lg:block ml-2">Sign Out</span>
                 </Button>
               </div>
             ) : (
               <Link to="/auth">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2">
-                  <i className="ri-login-box-line mr-2"></i>
-                  Sign In
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm shadow-md transition-all duration-200 hover:shadow-lg">
+                  <i className="ri-login-box-line text-sm"></i>
+                  <span className="hidden lg:block ml-2">Sign In</span>
                 </Button>
               </Link>
             )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden">
+          <div className="md:hidden ml-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2"
+              className="p-2 rounded-full hover:bg-gray-100/80"
             >
-              <i className={`${isMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-xl`}></i>
+              <i className={`${isMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-lg`}></i>
             </Button>
           </div>
         </div>
+      </nav>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 py-4 space-y-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors flex items-center space-x-3 ${
-                  location.pathname === item.path
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <i className={`${item.icon} text-lg`}></i>
-                <span>{item.name}</span>
-              </Link>
-            ))}
-            
-            <div className="pt-4 border-t border-gray-200 space-y-2">
-              {user ? (
-                <>
-                  <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                      <i className="ri-user-line mr-3 text-lg"></i>
-                      Profile
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div 
+            className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+            onClick={() => setIsMenuOpen(false)}
+          ></div>
+          <div className="absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 p-6">
+            <div className="space-y-3">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors flex items-center space-x-3 ${
+                    location.pathname === item.path
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <i className={`${item.icon} text-lg`}></i>
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+              
+              <div className="pt-4 border-t border-gray-200/50 space-y-3">
+                {user ? (
+                  <>
+                    <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl">
+                        <i className="ri-user-line mr-3 text-lg"></i>
+                        Profile
+                      </Button>
+                    </Link>
+                    <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl">
+                      <i className="ri-logout-box-line mr-3 text-lg"></i>
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl shadow-md">
+                      <i className="ri-login-box-line mr-2"></i>
+                      Sign In
                     </Button>
                   </Link>
-                  <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                    <i className="ri-logout-box-line mr-3 text-lg"></i>
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3">
-                    <i className="ri-login-box-line mr-2"></i>
-                    Sign In
-                  </Button>
-                </Link>
-              )}
+                )}
+              </div>
             </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -47,11 +47,10 @@ const Index = () => {
   const trendingTools = tools
     .sort((a, b) => (b.rating || 0) - (a.rating || 0))
     .slice(0, 8);
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      <div ref={containerRef} className="pt-16">
+      <div ref={containerRef} className="pt-4">
         <Hero />
         <TrendingTools tools={trendingTools} />
       </div>
