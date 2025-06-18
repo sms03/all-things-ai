@@ -231,7 +231,7 @@ const Comparisons = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Available Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTools.map((tool) => {
-                const isSelected = comparisons.find(t => t.id === tool.id);
+                const isSelected = Boolean(comparisons.find(t => t.id === tool.id));
                 return (
                   <Card key={tool.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
                     <CardHeader className="pb-4">
