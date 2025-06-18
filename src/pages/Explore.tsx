@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -40,8 +39,8 @@ const Explore = () => {
         tool.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      const matchesCategory = !selectedCategory || tool.category === selectedCategory;
-      const matchesPricing = !selectedPricing || tool.pricing === selectedPricing;
+      const matchesCategory = !selectedCategory || selectedCategory === 'all_categories' || tool.category === selectedCategory;
+      const matchesPricing = !selectedPricing || selectedPricing === 'all_pricing' || tool.pricing === selectedPricing;
       
       return matchesSearch && matchesCategory && matchesPricing;
     })
@@ -89,7 +88,7 @@ const Explore = () => {
               Explore AI Tools
             </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Discover and explore our comprehensive collection of AI tools across various categories
+              Discover and explore our comprehensive collection of AI tools across various categories, now sorted by user ratings
             </p>
           </div>
 
@@ -115,7 +114,7 @@ const Explore = () => {
                   <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="all_categories" className="text-gray-900">All Categories</SelectItem>
                     {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id} className="text-gray-900">
+                      <SelectItem key={category.id} value={category.slug} className="text-gray-900">
                         {category.name}
                       </SelectItem>
                     ))}
@@ -139,7 +138,7 @@ const Explore = () => {
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="rating" className="text-gray-900">Rating</SelectItem>
+                    <SelectItem value="rating" className="text-gray-900">Highest Rated</SelectItem>
                     <SelectItem value="name" className="text-gray-900">Name</SelectItem>
                     <SelectItem value="newest" className="text-gray-900">Newest</SelectItem>
                   </SelectContent>
@@ -181,7 +180,7 @@ const Explore = () => {
                     <div className="flex items-center">
                       <i className="ri-star-fill text-yellow-400 text-sm"></i>
                       <span className="ml-1 text-sm text-gray-600">
-                        {tool.rating?.toFixed(1) || 'No rating'}
+                        {tool.rating ? Number(tool.rating).toFixed(1) : '0.0'}
                       </span>
                     </div>
                   </div>

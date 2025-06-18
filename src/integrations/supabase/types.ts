@@ -515,6 +515,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_top_rated_tools: {
+        Args: { limit_count?: number }
+        Returns: {
+          id: string
+          name: string
+          description: string
+          website: string
+          pricing: string
+          rating: number
+          tags: string[]
+          category_id: string
+          featured: boolean
+          trending: boolean
+          created_at: string
+          updated_at: string
+          status: Database["public"]["Enums"]["tool_status"]
+        }[]
+      }
       gtrgm_compress: {
         Args: { "": unknown }
         Returns: unknown
@@ -553,6 +571,10 @@ export type Database = {
       show_trgm: {
         Args: { "": string }
         Returns: string[]
+      }
+      update_daily_tool_rankings: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       update_tool_analytics: {
         Args: Record<PropertyKey, never>
