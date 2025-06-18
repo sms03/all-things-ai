@@ -14,17 +14,18 @@ export interface ToolComparison {
 }
 
 export const useComparisons = () => {
-  const [comparisons, setComparisons] = useState<ToolComparison[]>([]);
+  const [comparisons, setComparisons] = useState<Tool[]>([]);
+  const [savedComparisons, setSavedComparisons] = useState<ToolComparison[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
-      fetchComparisons();
+      fetchSavedComparisons();
     }
   }, [user]);
 
-  const fetchComparisons = async () => {
+  const fetchSavedComparisons = async () => {
     if (!user) return;
 
     try {
@@ -35,12 +36,26 @@ export const useComparisons = () => {
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
-      setComparisons(data || []);
+      setSavedComparisons(data || []);
     } catch (error) {
       console.error('Error fetching comparisons:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const addToComparison = (tool: Tool) => {
+    if (comparisons.find(t => t.id === tool.id)) return;
+    if (comparisons.length >= 3) return;
+    setComparisons([...comparisons, tool]);
+  };
+
+  const removeFromComparison = (toolId: string) => {
+    setComparisons(comparisons.filter(t => t.id !== toolId));
+  };
+
+  const clearComparisons = () => {
+    setComparisons([]);
   };
 
   const createComparison = async (name: string, toolIds: string[]) => {
@@ -56,7 +71,7 @@ export const useComparisons = () => {
         });
 
       if (error) throw error;
-      await fetchComparisons();
+      await fetchSavedComparisons();
       return true;
     } catch (error) {
       console.error('Error creating comparison:', error);
@@ -75,7 +90,7 @@ export const useComparisons = () => {
         .eq('user_id', user.id);
 
       if (error) throw error;
-      await fetchComparisons();
+      await fetchSavedComparisons();
       return true;
     } catch (error) {
       console.error('Error deleting comparison:', error);
@@ -85,9 +100,13 @@ export const useComparisons = () => {
 
   return {
     comparisons,
+    savedComparisons,
     loading,
+    addToComparison,
+    removeFromComparison,
+    clearComparisons,
     createComparison,
     deleteComparison,
-    refetch: fetchComparisons
+    refetch: fetchSavedComparisons
   };
 };

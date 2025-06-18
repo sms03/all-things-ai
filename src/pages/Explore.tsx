@@ -59,15 +59,15 @@ const Explore = () => {
     });
 
   const handleToolClick = (tool: any) => {
-    trackEvent('tool_clicked', { tool_id: tool.id, source: 'explore' });
+    trackEvent('tool_click', { tool_id: tool.id, source: 'explore' });
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen pt-20">
-          <div className="text-center bg-white border border-gray-200 rounded-lg p-12 shadow-sm max-w-md mx-auto">
+          <div className="text-center border border-gray-200 rounded-lg p-12 shadow-sm max-w-md mx-auto">
             <div className="w-12 h-12 mx-auto mb-6 border-2 border-blue-600 rounded-full animate-spin border-t-transparent"></div>
             <div className="text-xl font-medium text-gray-900 mb-2">Loading AI tools</div>
             <div className="text-gray-600 text-sm">Discovering amazing tools for you</div>
@@ -78,25 +78,23 @@ const Explore = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       <div className="pt-24 pb-16">
         <div ref={pageRef} className="max-w-7xl mx-auto px-6">
           {/* Header */}
-          <div className="mb-12">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Explore AI Tools
-              </h1>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Discover and explore our comprehensive collection of AI tools across various categories
-              </p>
-            </div>
+          <div className="mb-12 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Explore AI Tools
+            </h1>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Discover and explore our comprehensive collection of AI tools across various categories
+            </p>
           </div>
 
           {/* Filters */}
-          <Card className="mb-8 bg-white border border-gray-200">
+          <Card className="mb-8 border border-gray-200">
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="relative">
@@ -160,7 +158,7 @@ const Explore = () => {
           {/* Tools Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredAndSortedTools.map((tool) => (
-              <Card key={tool.id} className="bg-white border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
+              <Card key={tool.id} className="border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
