@@ -31,10 +31,10 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen pt-20">
-          <div className="text-center bg-white border border-gray-200 rounded-lg p-12 shadow-sm max-w-md mx-auto">
+          <div className="text-center bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl p-12 shadow-xl max-w-md mx-auto">
             <div className="w-12 h-12 mx-auto mb-6 border-2 border-blue-600 rounded-full animate-spin border-t-transparent"></div>
             <div className="text-xl font-medium text-gray-900 mb-2">Loading AI tools</div>
             <div className="text-gray-600 text-sm">Discovering the future of AI</div>
@@ -50,7 +50,7 @@ const Index = () => {
     .slice(0, 8);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navigation />
       <div ref={containerRef} className="pt-4">
         <Hero />

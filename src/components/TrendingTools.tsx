@@ -30,11 +30,12 @@ const TrendingTools = ({ tools }: TrendingToolsProps) => {
       );
     }
   }, [tools]);
+
   return (
-    <section ref={sectionRef} className="py-20 lg:py-32 bg-gray-50">
+    <section ref={sectionRef} className="py-12 lg:py-16 bg-gradient-to-br from-gray-50 to-blue-50/30">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             <i className="ri-fire-line mr-4 text-orange-500"></i>
             Trending Tools
           </h2>
@@ -43,7 +44,7 @@ const TrendingTools = ({ tools }: TrendingToolsProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {tools.map((tool, index) => (
             <div key={tool.id} className="tool-card h-full">
               <ToolCard tool={tool} index={index} />

@@ -30,7 +30,7 @@ const TopRatedTools = () => {
 
   if (loading) {
     return (
-      <section className="py-20 lg:py-32 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center">
             <div className="w-12 h-12 mx-auto mb-6 border-2 border-blue-600 rounded-full animate-spin border-t-transparent"></div>
@@ -43,7 +43,7 @@ const TopRatedTools = () => {
 
   if (topRatedTools.length === 0) {
     return (
-      <section className="py-20 lg:py-32 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <Star className="w-16 h-16 mx-auto mb-6 text-gray-400" />
           <h2 className="text-3xl font-bold text-gray-900 mb-4">No Rated Tools Yet</h2>
@@ -56,10 +56,10 @@ const TopRatedTools = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-20 lg:py-32 bg-white">
+    <section ref={sectionRef} className="py-12 lg:py-16 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             <TrendingUp className="inline-block w-10 h-10 mr-4 text-blue-600" />
             Top Rated Tools
           </h2>
@@ -68,7 +68,7 @@ const TopRatedTools = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {topRatedTools.map((tool, index) => (
             <div key={tool.id} className="tool-card h-full">
               <ToolCard tool={tool} index={index} />
