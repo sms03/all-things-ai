@@ -124,14 +124,6 @@ const SubmitTool = () => {
         <div ref={pageRef} className="max-w-4xl mx-auto px-6">
           {/* Header */}
           <div className="mb-12">
-            <Button
-              variant="ghost"
-              onClick={() => navigate(-1)}
-              className="mb-8 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-            >
-              <i className="ri-arrow-left-line mr-2"></i>
-              Back
-            </Button>
             
             <div className="text-center">
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
