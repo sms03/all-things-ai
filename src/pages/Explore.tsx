@@ -40,7 +40,7 @@ const Explore = () => {
         tool.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      const matchesCategory = !selectedCategory || tool.category_id === selectedCategory;
+      const matchesCategory = !selectedCategory || tool.category === selectedCategory;
       const matchesPricing = !selectedPricing || tool.pricing === selectedPricing;
       
       return matchesSearch && matchesCategory && matchesPricing;
@@ -113,7 +113,7 @@ const Explore = () => {
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="" className="text-gray-900">All Categories</SelectItem>
+                    <SelectItem value="all_categories" className="text-gray-900">All Categories</SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category.id} value={category.id} className="text-gray-900">
                         {category.name}
@@ -127,7 +127,7 @@ const Explore = () => {
                     <SelectValue placeholder="All Pricing" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="" className="text-gray-900">All Pricing</SelectItem>
+                    <SelectItem value="all_pricing" className="text-gray-900">All Pricing</SelectItem>
                     <SelectItem value="free" className="text-gray-900">Free</SelectItem>
                     <SelectItem value="freemium" className="text-gray-900">Freemium</SelectItem>
                     <SelectItem value="paid" className="text-gray-900">Paid</SelectItem>
