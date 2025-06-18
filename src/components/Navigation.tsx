@@ -49,7 +49,7 @@ const Navigation = () => {
               <i className="ri-robot-2-fill text-white text-lg"></i>
             </div>
             <span className="text-xl font-bold text-gray-900 hidden sm:block">
-              A2Z AI Tools
+              All Things AI
             </span>
           </Link>
 
