@@ -4,6 +4,7 @@ import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
 import TrendingTools from '@/components/TrendingTools';
 import TopRatedTools from '@/components/TopRatedTools';
+import ScrollDebug from '@/components/ScrollDebug';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -17,14 +18,15 @@ const Index = () => {
     trackEvent('page_view', { page: 'home' });
   }, [trackEvent]);
 
-  // GSAP animations on mount
+  // GSAP animations on mount - disable when using Locomotive Scroll
   useEffect(() => {
     if (!loading && containerRef.current) {
-      gsap.fromTo(
-        containerRef.current.children,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: "power2.out" }
-      );
+      // Disable GSAP animations when using Locomotive Scroll
+      // gsap.fromTo(
+      //   containerRef.current.children,
+      //   { opacity: 0, y: 20 },
+      //   { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: "power2.out" }
+      // );
     }
   }, [loading]);
 
@@ -51,11 +53,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navigation />
-      <div ref={containerRef} className="pt-4">
-        <Hero />
-        <TopRatedTools />
-        <TrendingTools tools={trendingTools} />
+      <div ref={containerRef} className="pt-4" data-scroll-section>
+        <div data-scroll data-scroll-speed="0.1">
+          <Hero />
+        </div>
+        <div data-scroll data-scroll-speed="0.2">
+          <TopRatedTools />
+        </div>
+        <div data-scroll data-scroll-speed="0.3">
+          <TrendingTools tools={trendingTools} />
+        </div>
       </div>
+      <ScrollDebug />
     </div>
   );
 };
