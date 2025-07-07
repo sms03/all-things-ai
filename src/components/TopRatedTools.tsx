@@ -55,9 +55,9 @@ const TopRatedTools = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-12 lg:py-16 bg-white">
+    <section ref={sectionRef} className="py-12 lg:py-16 bg-white" data-scroll-section>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12" data-scroll data-scroll-speed="0.3">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             <TrendingUp className="inline-block w-10 h-10 mr-4 text-blue-600" />
             Top Rated Tools
@@ -67,15 +67,15 @@ const TopRatedTools = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12" data-scroll data-scroll-speed="0.5">
           {topRatedTools.map((tool, index) => (
-            <div key={tool.id} className="tool-card h-full">
+            <div key={tool.id} className="tool-card h-full" data-scroll data-scroll-speed={0.6 + index * 0.1}>
               <ToolCard tool={tool} index={index} />
             </div>
           ))}
         </div>
 
-        <div className="text-center">
+        <div className="text-center" data-scroll data-scroll-speed="0.4">
           <Link to="/explore">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg h-12 transition-all duration-300 hover:scale-105">
               <Star className="w-5 h-5 mr-2" />
