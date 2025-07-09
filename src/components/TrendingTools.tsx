@@ -31,9 +31,9 @@ const TrendingTools = ({ tools }: TrendingToolsProps) => {
   }, [tools]);
 
   return (
-    <section ref={sectionRef} className="py-12 lg:py-16 bg-gradient-to-br from-gray-50 to-blue-50/30" data-scroll-section>
+    <section ref={sectionRef} className="py-12 lg:py-16 bg-gradient-to-br from-gray-50 to-blue-50/30">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12" data-scroll data-scroll-speed="0.3">
+        <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             <i className="ri-fire-line mr-4 text-orange-500"></i>
             Trending Tools
@@ -43,15 +43,15 @@ const TrendingTools = ({ tools }: TrendingToolsProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12" data-scroll data-scroll-speed="0.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {tools.map((tool, index) => (
-            <div key={tool.id} className="tool-card h-full" data-scroll data-scroll-speed={0.6 + index * 0.1}>
+            <div key={tool.id} className="tool-card h-full">
               <ToolCard tool={tool} index={index} />
             </div>
           ))}
         </div>
 
-        <div className="text-center" data-scroll data-scroll-speed="0.4">
+        <div className="text-center">
           <Link to="/explore">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg h-12 transition-all duration-300 hover:scale-105">
               <i className="ri-compass-3-line mr-2"></i>
