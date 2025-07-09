@@ -25,11 +25,10 @@ const Explore = () => {
 
   useEffect(() => {
     if (!loading && pageRef.current) {
-      // Disable GSAP animations when using Locomotive Scroll
-      // gsap.fromTo(pageRef.current.children,
-      //   { opacity: 0, y: 20 },
-      //   { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
-      // );
+      gsap.fromTo(pageRef.current.children,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
+      );
     }
   }, [loading]);
 
@@ -81,10 +80,10 @@ const Explore = () => {
     <div className="min-h-screen bg-white">
       <Navigation />
       
-      <div className="pt-24 pb-16" data-scroll-section>
+      <div className="pt-24 pb-16">
         <div ref={pageRef} className="max-w-7xl mx-auto px-6">
           {/* Header */}
-          <div className="mb-12 text-center" data-scroll data-scroll-speed="0.1">
+          <div className="mb-12 text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Explore AI Tools
             </h1>
@@ -94,7 +93,7 @@ const Explore = () => {
           </div>
 
           {/* Filters */}
-          <Card className="mb-8 border border-gray-200" data-scroll data-scroll-speed="0.2">
+          <Card className="mb-8 border border-gray-200">
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="relative">
@@ -149,14 +148,14 @@ const Explore = () => {
           </Card>
 
           {/* Results Count */}
-          <div className="mb-6" data-scroll data-scroll-speed="0.1">
+          <div className="mb-6">
             <p className="text-gray-600">
               Showing {filteredAndSortedTools.length} of {tools.length} tools
             </p>
           </div>
 
           {/* Tools Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-scroll data-scroll-speed="0.2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredAndSortedTools.map((tool) => (
               <Card key={tool.id} className="border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader className="pb-4">
