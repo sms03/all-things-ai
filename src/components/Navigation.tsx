@@ -15,26 +15,22 @@ const Navigation = () => {
   const navRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (navRef.current) {
-      // Disable GSAP animations when using Locomotive Scroll
-      console.log('Navigation: GSAP animations disabled for Locomotive Scroll compatibility');
-      // gsap.fromTo(navRef.current, 
-      //   { opacity: 0, y: -20 },
-      //   { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
-      // );
+      gsap.fromTo(navRef.current, 
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      );
     }
   }, []);
 
-  // Handle scroll effect - disabled for Locomotive Scroll compatibility
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      // Disable scroll listener when using Locomotive Scroll
-      // const scrollTop = window.scrollY;
-      // setIsScrolled(scrollTop > 50);
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
     };
 
-    // Disable scroll listener when using Locomotive Scroll
-    // window.addEventListener('scroll', handleScroll);
-    // return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSignOut = async () => {
