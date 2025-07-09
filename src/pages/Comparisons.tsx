@@ -71,10 +71,10 @@ const Comparisons = () => {
     <div className="min-h-screen bg-white">
       <Navigation />
       
-      <div className="pt-24 pb-16" data-scroll-section>
+      <div className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-6">
           {/* Header */}
-          <div className="mb-12 text-center" data-scroll data-scroll-speed="0.1">
+          <div className="mb-12 text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Compare AI Tools
             </h1>
@@ -85,7 +85,7 @@ const Comparisons = () => {
 
           {/* Active Comparison */}
           {comparisons.length > 0 && (
-            <Card className="mb-8 border border-gray-200" data-scroll data-scroll-speed="0.2">
+            <Card className="mb-8 border border-gray-200">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
@@ -195,7 +195,7 @@ const Comparisons = () => {
           )}
 
           {/* Filters */}
-          <Card className="mb-8 border border-gray-200" data-scroll data-scroll-speed="0.2">
+          <Card className="mb-8 border border-gray-200">
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="relative">
@@ -227,7 +227,7 @@ const Comparisons = () => {
           </Card>
 
           {/* Available Tools */}
-          <div className="mb-8" data-scroll data-scroll-speed="0.1">
+          <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Available Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTools.map((tool) => {
@@ -277,7 +277,7 @@ const Comparisons = () => {
 
           {/* Saved Comparisons */}
           {savedComparisons.length > 0 && (
-            <div data-scroll data-scroll-speed="0.1">
+            <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Saved Comparisons</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {savedComparisons.map((comparison) => (
