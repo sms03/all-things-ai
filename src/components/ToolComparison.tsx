@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { X, Plus, Scale, ExternalLink, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useRoles } from '@/hooks/useRoles';
 import { supabase } from '@/integrations/supabase/client';

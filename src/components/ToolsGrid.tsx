@@ -1,4 +1,3 @@
-
 import ToolCard from '@/components/ToolCard';
 import type { Tool } from '@/hooks/useSupabaseData';
 
