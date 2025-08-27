@@ -25,6 +25,7 @@ import {
 import ModerationPanel from '@/components/ModerationPanel';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import UserManagement from '@/components/UserManagement';
+import PopulateTools from '@/components/PopulateTools';
 
 const AdminDashboard = () => {
   const { currentUserRole, loading: roleLoading, isAdmin } = useRoles();
@@ -197,6 +198,10 @@ const AdminDashboard = () => {
                       <Users className="h-4 w-4 mr-2" />
                       Manage User Roles
                     </Button>
+                    <div className="pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">Database Management</p>
+                      <PopulateTools />
+                    </div>
                   </CardContent>
                 </Card>
               </div>
