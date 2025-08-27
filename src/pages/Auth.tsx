@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,17 +7,44 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { useRoles } from '@/hooks/useRoles';
 import { Loader2, ArrowLeft } from 'lucide-react';
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     fullName: '',
   });
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user } = useAuth();
+  const { isAdmin, loading: rolesLoading } = useRoles();
   const navigate = useNavigate();
+
+  // Handle redirect after successful authentication
+  useEffect(() => {
+    if (user && !loading && !rolesLoading && !redirecting) {
+      setRedirecting(true);
+      
+      // Small delay to ensure role data is fully loaded
+      setTimeout(() => {
+        if (isAdmin()) {
+          toast({
+            title: "Welcome back, Admin!",
+            description: "Redirecting to admin dashboard...",
+          });
+          navigate('/admin');
+        } else {
+          toast({
+            title: "Welcome back!",
+            description: "You have been signed in successfully.",
+          });
+          navigate('/');
+        }
+      }, 500);
+    }
+  }, [user, isAdmin, loading, rolesLoading, navigate, redirecting]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -29,6 +56,7 @@ const Auth = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setRedirecting(false);
     
     const { error } = await signIn(formData.email, formData.password);
     
@@ -38,14 +66,9 @@ const Auth = () => {
         description: error.message,
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "Welcome back!",
-        description: "You have been signed in successfully.",
-      });
-      navigate('/');
+      setLoading(false);
     }
-    setLoading(false);
+    // Don't set loading to false here - let the useEffect handle redirect and loading state
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -124,9 +147,15 @@ const Auth = () => {
                       className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
                     />
                   </div>
-                  <Button type="submit" className="w-full ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors" disabled={loading}>
-                    {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    Sign In
+                  
+                  <div className="text-xs text-gray-600 dark:text-gray-400 ibm-plex-serif-regular text-center p-2 bg-blue-50 dark:bg-blue-950 rounded-md border border-blue-200 dark:border-blue-800">
+                    <i className="ri-information-line mr-1"></i>
+                    Admin users will be automatically redirected to the admin dashboard
+                  </div>
+
+                  <Button type="submit" className="w-full ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors" disabled={loading || redirecting}>
+                    {(loading || redirecting) && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                    {redirecting ? 'Redirecting...' : 'Sign In'}
                   </Button>
                 </form>
               </TabsContent>
