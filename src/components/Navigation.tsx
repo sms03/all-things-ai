@@ -7,7 +7,7 @@ import { useRoles } from '@/hooks/useRoles';
 
 const Navigation = () => {
   const { user, signOut } = useAuth();
-  const { isModerator } = useRoles();
+  const { isAdmin } = useRoles();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,8 +45,8 @@ const Navigation = () => {
     { name: 'Submit Tool', path: '/submit', icon: 'ri-add-circle-line' },
   ];
 
-  // Add admin link for moderators and admins
-  if (user && isModerator()) {
+  // Add admin link for admins only
+  if (user && isAdmin()) {
     navItems.push({ name: 'Admin', path: '/admin', icon: 'ri-shield-user-line' });
   }
   return (

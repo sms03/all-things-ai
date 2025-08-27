@@ -27,7 +27,7 @@ import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import UserManagement from '@/components/UserManagement';
 
 const AdminDashboard = () => {
-  const { currentUserRole, loading: roleLoading, isModerator } = useRoles();
+  const { currentUserRole, loading: roleLoading, isAdmin } = useRoles();
   const { analytics, loading: analyticsLoading } = useAdminAnalytics();
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
     );
   }
 
-  if (!isModerator()) {
+  if (!isAdmin()) {
     return <Navigate to="/" replace />;
   }
 
