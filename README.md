@@ -8,66 +8,65 @@
 
 There are several ways of editing your application.
 
-**Use Lovable**
+<!--- 👋 Nice README header --->
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/54159397-b7d1-48fe-9fe9-2311dc387f9d) and start prompting.
+# All Things AI
 
-Changes made via Lovable will be committed automatically to this repo.
+A curated directory and demo of modern AI tools — built with React, TypeScript, Vite, Tailwind CSS and shadcn-ui.
 
-**Use your preferred IDE**
+<!-- Badges -->
+![vite](https://img.shields.io/badge/Vite-Blue?logo=vite&logoColor=white)
+![react](https://img.shields.io/badge/React-17.0.0-blue?logo=react&logoColor=white)
+![typescript](https://img.shields.io/badge/TypeScript-4.0-blue?logo=typescript&logoColor=white)
+![license](https://img.shields.io/badge/License-MIT-green)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+One-liner: a fast, polished front-end for browsing, rating and comparing AI tools.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## What you'll find
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Pages: Home, Explore, Tool detail, Submit, Comparisons, Analytics, Admin dashboard
+- Components: Tool cards, Filters, Top-rated & Trending sections, Navigation, Auth flow
+- Integrations: Supabase (data + auth) scaffolded under `supabase/`
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Project structure (important)
 
-# Step 3: Install the necessary dependencies.
-npm i
+- `src/` – React app
+	- `components/` – UI components and shadcn-ui atoms
+	- `pages/` – top-level route pages
+	- `hooks/` – data + auth hooks
+	- `integrations/supabase/` – Supabase functions and config
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## Development tips
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- Tailwind classes are used across components. Use the class names in `src/` when tweaking layout.
+- Run the dev server, make changes, save — Vite updates instantly.
 
-**Use GitHub Codespaces**
+## Contributing
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Make changes and push
+4. Open a PR and describe the change briefly
 
-## What technologies are used for this project?
+If you want help with design or adding tests, open an issue and describe what you need.
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Notes & next steps
 
-## How can I deploy this project?
+- I removed the Locomotive Scroll integration (smooth-scrolling) and debug components to restore native scrolling behavior.
+- If you want the smooth-scroll behavior re-added later, I can re-integrate a lightweight, optional provider and styles.
 
-Simply open [Lovable](https://lovable.dev/projects/54159397-b7d1-48fe-9fe9-2311dc387f9d) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+### License
 
-Yes, you can!
+MIT — see `LICENSE` (if present) or add one as needed.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Happy hacking — open an issue or ping me if you want a specific README section (screenshots, roadmap, deploy details).
