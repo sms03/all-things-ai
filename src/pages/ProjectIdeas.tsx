@@ -9,9 +9,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const ProjectIdeas = () => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('');
-  const [selectedBusinessPotential, setSelectedBusinessPotential] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all-categories');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('all-difficulties');
+  const [selectedBusinessPotential, setSelectedBusinessPotential] = useState('all-potential');
   const [sortBy, setSortBy] = useState('featured');
   const [expandedIdea, setExpandedIdea] = useState<string | null>(null);
 
@@ -20,9 +20,9 @@ const ProjectIdeas = () => {
 
   const filteredIdeas = projectIdeas.filter(idea => {
     return (
-      (!selectedCategory || idea.category === selectedCategory) &&
-      (!selectedDifficulty || idea.difficulty_level === selectedDifficulty) &&
-      (!selectedBusinessPotential || idea.business_potential === selectedBusinessPotential)
+      (selectedCategory === 'all-categories' || idea.category === selectedCategory) &&
+      (selectedDifficulty === 'all-difficulties' || idea.difficulty_level === selectedDifficulty) &&
+      (selectedBusinessPotential === 'all-potential' || idea.business_potential === selectedBusinessPotential)
     );
   }).sort((a, b) => {
     switch (sortBy) {
@@ -117,7 +117,7 @@ const ProjectIdeas = () => {
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all-categories">All Categories</SelectItem>
                 {categories.map(category => (
                   <SelectItem key={category.slug} value={category.name}>
                     {category.name}
@@ -131,7 +131,7 @@ const ProjectIdeas = () => {
                 <SelectValue placeholder="All Difficulties" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Difficulties</SelectItem>
+                <SelectItem value="all-difficulties">All Difficulties</SelectItem>
                 <SelectItem value="Beginner">Beginner</SelectItem>
                 <SelectItem value="Intermediate">Intermediate</SelectItem>
                 <SelectItem value="Advanced">Advanced</SelectItem>
@@ -143,7 +143,7 @@ const ProjectIdeas = () => {
                 <SelectValue placeholder="Business Potential" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Potential</SelectItem>
+                <SelectItem value="all-potential">All Potential</SelectItem>
                 <SelectItem value="High">High Potential</SelectItem>
                 <SelectItem value="Medium">Medium Potential</SelectItem>
                 <SelectItem value="Low">Low Potential</SelectItem>
@@ -165,9 +165,9 @@ const ProjectIdeas = () => {
             <Button 
               variant="outline" 
               onClick={() => {
-                setSelectedCategory('');
-                setSelectedDifficulty('');
-                setSelectedBusinessPotential('');
+                setSelectedCategory('all-categories');
+                setSelectedDifficulty('all-difficulties');
+                setSelectedBusinessPotential('all-potential');
                 setSortBy('featured');
               }}
               className="w-full"
