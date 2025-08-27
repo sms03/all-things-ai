@@ -16,7 +16,7 @@ const Explore = () => {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedPricing, setSelectedPricing] = useState('');
-  const [sortBy, setSortBy] = useState('rating');
+  const [sortBy, setSortBy] = useState('name');
   const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -138,8 +138,8 @@ const Explore = () => {
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="rating" className="text-gray-900">Highest Rated</SelectItem>
-                    <SelectItem value="name" className="text-gray-900">Name</SelectItem>
+                     <SelectItem value="name" className="text-gray-900">Name (A-Z)</SelectItem>
+                     <SelectItem value="rating" className="text-gray-900">Highest Rated</SelectItem>
                     <SelectItem value="newest" className="text-gray-900">Newest</SelectItem>
                   </SelectContent>
                 </Select>
