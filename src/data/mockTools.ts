@@ -1,4 +1,3 @@
-
 import { Tool } from '@/types/tool';
 
 export const mockTools: Tool[] = [
