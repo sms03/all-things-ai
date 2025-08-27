@@ -118,7 +118,7 @@ const ProjectIdeas = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all-categories">All Categories</SelectItem>
-                {categories.map(category => (
+                {categories.filter(category => category.name && category.name.trim() !== '').map(category => (
                   <SelectItem key={category.slug} value={category.name}>
                     {category.name}
                   </SelectItem>
