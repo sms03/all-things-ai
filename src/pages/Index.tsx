@@ -3,7 +3,6 @@ import { gsap } from 'gsap';
 import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
 import TrendingTools from '@/components/TrendingTools';
-import TopRatedTools from '@/components/TopRatedTools';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -54,9 +53,6 @@ const Index = () => {
       <div ref={containerRef} className="pt-4">
         <div>
           <Hero />
-        </div>
-        <div>
-          <TopRatedTools />
         </div>
         <div>
           <TrendingTools tools={trendingTools} />

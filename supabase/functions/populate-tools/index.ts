@@ -48,6 +48,28 @@ serve(async (req) => {
       { name: 'Microsoft Copilot', description: 'AI-powered assistant by Microsoft', website: 'https://copilot.microsoft.com', category_slug: 'chatbots', pricing: 'freemium', rating: 4.5, tags: ['microsoft', 'ai', 'assistant'] },
       { name: 'Perplexity AI', description: 'AI-powered search and answer engine', website: 'https://perplexity.ai', category_slug: 'chatbots', pricing: 'freemium', rating: 4.4, tags: ['search', 'ai', 'answers'] },
       
+      // AI Agents
+      { name: 'AutoGPT', description: 'Autonomous GPT-4 agent for complex task automation', website: 'https://autogpt.net', category_slug: 'chatbots', pricing: 'free', rating: 4.2, tags: ['ai-agent', 'automation', 'autonomous', 'gpt-4'] },
+      { name: 'BabyAGI', description: 'Autonomous AI agent for task management and execution', website: 'https://github.com/yoheinakajima/babyagi', category_slug: 'productivity', pricing: 'free', rating: 4.1, tags: ['ai-agent', 'task-management', 'autonomous'] },
+      { name: 'LangChain Agents', description: 'Framework for building autonomous AI agents', website: 'https://langchain.com', category_slug: 'developer', pricing: 'free', rating: 4.3, tags: ['ai-agent', 'framework', 'autonomous', 'langchain'] },
+      { name: 'Multi-Agent System', description: 'CrewAI multi-agent collaboration framework', website: 'https://crewai.com', category_slug: 'productivity', pricing: 'freemium', rating: 4.0, tags: ['ai-agent', 'collaboration', 'multi-agent', 'crew'] },
+      { name: 'Agent GPT', description: 'Browser-based autonomous AI agent platform', website: 'https://agentgpt.reworkd.ai', category_slug: 'productivity', pricing: 'freemium', rating: 4.1, tags: ['ai-agent', 'browser', 'autonomous'] },
+      { name: 'MetaGPT', description: 'Multi-agent framework for software development', website: 'https://github.com/geekan/MetaGPT', category_slug: 'developer', pricing: 'free', rating: 4.2, tags: ['ai-agent', 'software-development', 'multi-agent'] },
+      { name: 'SuperAGI', description: 'Open-source autonomous AI agent framework', website: 'https://superagi.com', category_slug: 'productivity', pricing: 'free', rating: 4.0, tags: ['ai-agent', 'open-source', 'autonomous'] },
+      { name: 'Godmode AI', description: 'Web-based autonomous AI agent for various tasks', website: 'https://godmode.space', category_slug: 'productivity', pricing: 'free', rating: 3.9, tags: ['ai-agent', 'web-based', 'autonomous'] },
+      
+      // MCP Servers
+      { name: 'GitHub MCP Server', description: 'Model Context Protocol server for GitHub integration', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.4, tags: ['mcp-server', 'github', 'integration', 'protocol'] },
+      { name: 'PostgreSQL MCP Server', description: 'MCP server for PostgreSQL database operations', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.3, tags: ['mcp-server', 'postgresql', 'database'] },
+      { name: 'Filesystem MCP Server', description: 'Model Context Protocol server for file operations', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.2, tags: ['mcp-server', 'filesystem', 'files'] },
+      { name: 'Slack MCP Server', description: 'MCP server for Slack workspace integration', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'productivity', pricing: 'free', rating: 4.1, tags: ['mcp-server', 'slack', 'communication'] },
+      { name: 'Google Drive MCP Server', description: 'Model Context Protocol server for Google Drive', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'productivity', pricing: 'free', rating: 4.0, tags: ['mcp-server', 'google-drive', 'storage'] },
+      { name: 'SQLite MCP Server', description: 'MCP server for SQLite database operations', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.2, tags: ['mcp-server', 'sqlite', 'database'] },
+      { name: 'Brave Search MCP Server', description: 'Model Context Protocol server for Brave Search', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'productivity', pricing: 'free', rating: 4.0, tags: ['mcp-server', 'brave-search', 'search'] },
+      { name: 'AWS MCP Server', description: 'MCP server for Amazon Web Services integration', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.3, tags: ['mcp-server', 'aws', 'cloud'] },
+      { name: 'Docker MCP Server', description: 'Model Context Protocol server for Docker operations', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.1, tags: ['mcp-server', 'docker', 'containers'] },
+      { name: 'Kubernetes MCP Server', description: 'MCP server for Kubernetes cluster management', website: 'https://github.com/modelcontextprotocol/servers', category_slug: 'developer', pricing: 'free', rating: 4.2, tags: ['mcp-server', 'kubernetes', 'orchestration'] },
+      
       // Content Writing & Copywriting
       { name: 'Jasper AI', description: 'AI writing assistant for content creation', website: 'https://jasper.ai', category_slug: 'text-copywriting', pricing: 'paid', rating: 4.5, tags: ['writing', 'content', 'copywriting'] },
       { name: 'Copy.ai', description: 'AI-powered copywriting tool', website: 'https://copy.ai', category_slug: 'text-copywriting', pricing: 'freemium', rating: 4.3, tags: ['copywriting', 'ai', 'marketing'] },
