@@ -132,24 +132,46 @@ serve(async (req) => {
 
     if (existingError) {
       console.error('Error checking existing tools:', existingError)
-    } else {
-      console.log('Existing tools count:', existingTools?.length || 0)
+      throw new Error(`Failed to check existing tools: ${existingError.message}`)
     }
 
-    // Insert tools in batches
+    const existingToolNames = new Set(existingTools?.map(tool => tool.name) || [])
+    console.log('Existing tools count:', existingTools?.length || 0)
+
+    // Filter out tools that already exist
+    const newToolsToInsert = toolsToInsert.filter(tool => !existingToolNames.has(tool.name))
+    console.log('New tools to insert:', newToolsToInsert.length)
+
+    if (newToolsToInsert.length === 0) {
+      console.log('No new tools to insert - all tools already exist')
+      return new Response(
+        JSON.stringify({ 
+          message: 'All tools already exist in the database!',
+          details: {
+            categoriesFound: categories?.length,
+            toolsProcessed: toolsToInsert.length,
+            toolsInserted: 0,
+            existingTools: existingTools?.length || 0
+          }
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200 
+        }
+      )
+    }
+
+    // Insert new tools in batches
     const batchSize = 10
     let totalInserted = 0
 
-    for (let i = 0; i < toolsToInsert.length; i += batchSize) {
-      const batch = toolsToInsert.slice(i, i + batchSize)
+    for (let i = 0; i < newToolsToInsert.length; i += batchSize) {
+      const batch = newToolsToInsert.slice(i, i + batchSize)
       console.log(`Inserting batch ${Math.floor(i / batchSize) + 1}:`, batch.length, 'tools')
       
       const { data, error } = await supabase
         .from('tools')
-        .upsert(batch, { 
-          onConflict: 'name',
-          ignoreDuplicates: true 
-        })
+        .insert(batch)
         .select()
 
       if (error) {
