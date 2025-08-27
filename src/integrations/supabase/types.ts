@@ -195,6 +195,143 @@ export type Database = {
         }
         Relationships: []
       }
+      project_idea_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      project_idea_upvotes: {
+        Row: {
+          created_at: string
+          id: string
+          project_idea_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          project_idea_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          project_idea_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_idea_upvotes_project_idea_id_fkey"
+            columns: ["project_idea_id"]
+            isOneToOne: false
+            referencedRelation: "project_ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_ideas: {
+        Row: {
+          ai_tools_used: string[]
+          business_potential: string
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string
+          detailed_description: string | null
+          difficulty_level: string
+          estimated_time: string
+          featured: boolean | null
+          id: string
+          learning_resources: string[] | null
+          market_size: string | null
+          monetization_ideas: string[] | null
+          required_skills: string[]
+          similar_successful_companies: string[] | null
+          tags: string[] | null
+          target_audience: string | null
+          tech_stack: string[]
+          title: string
+          trending: boolean | null
+          updated_at: string
+          upvotes_count: number | null
+          views_count: number | null
+        }
+        Insert: {
+          ai_tools_used?: string[]
+          business_potential: string
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description: string
+          detailed_description?: string | null
+          difficulty_level: string
+          estimated_time: string
+          featured?: boolean | null
+          id?: string
+          learning_resources?: string[] | null
+          market_size?: string | null
+          monetization_ideas?: string[] | null
+          required_skills?: string[]
+          similar_successful_companies?: string[] | null
+          tags?: string[] | null
+          target_audience?: string | null
+          tech_stack?: string[]
+          title: string
+          trending?: boolean | null
+          updated_at?: string
+          upvotes_count?: number | null
+          views_count?: number | null
+        }
+        Update: {
+          ai_tools_used?: string[]
+          business_potential?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          detailed_description?: string | null
+          difficulty_level?: string
+          estimated_time?: string
+          featured?: boolean | null
+          id?: string
+          learning_resources?: string[] | null
+          market_size?: string | null
+          monetization_ideas?: string[] | null
+          required_skills?: string[]
+          similar_successful_companies?: string[] | null
+          tags?: string[] | null
+          target_audience?: string | null
+          tech_stack?: string[]
+          title?: string
+          trending?: boolean | null
+          updated_at?: string
+          upvotes_count?: number | null
+          views_count?: number | null
+        }
+        Relationships: []
+      }
       review_votes: {
         Row: {
           created_at: string

@@ -40,6 +40,7 @@ const Navigation = () => {
   const navItems = [
     { name: 'Home', path: '/', icon: 'ri-home-4-line' },
     { name: 'Explore', path: '/explore', icon: 'ri-compass-3-line' },
+    { name: 'Project Ideas', path: '/project-ideas', icon: 'ri-lightbulb-line' },
     { name: 'Comparisons', path: '/comparisons', icon: 'ri-scales-3-line' },
     { name: 'Submit Tool', path: '/submit', icon: 'ri-add-circle-line' },
   ];

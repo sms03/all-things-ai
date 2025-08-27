@@ -12,6 +12,7 @@ import ToolDetail from "./pages/ToolDetail";
 import Comparisons from "./pages/Comparisons";
 import Analytics from "./pages/Analytics";
 import AdminDashboard from "./pages/AdminDashboard";
+import ProjectIdeas from "./pages/ProjectIdeas";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/project-ideas" element={<ProjectIdeas />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/submit" element={<SubmitTool />} />
