@@ -102,7 +102,7 @@ const Hero = () => {
                 const el = document.getElementById('browse-categories');
                 if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="inline-flex flex-col items-center gap-1 text-sm text-gray-500 hover:text-blue-600 focus-ring"
+              className="inline-flex flex-col items-center gap-0.25 text-sm text-gray-500 hover:text-blue-600 focus-ring"
               aria-label="Scroll down for more"
             >
               <i className="ri-arrow-down-s-line text-xl animate-bounce" aria-hidden="true"></i>
