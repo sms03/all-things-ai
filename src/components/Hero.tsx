@@ -43,7 +43,7 @@ const Hero = () => {
   ).length;
 
   return (
-    <div className="relative py-20 lg:py-32">
+    <div className="relative pt-20 pb-8 lg:pt-32 lg:pb-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div ref={heroRef} className="text-center">
           {/* Main Heading */}
