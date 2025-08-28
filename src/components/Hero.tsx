@@ -79,7 +79,7 @@ const Hero = () => {
           </form>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10 md:mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4 md:mb-6">
             <Link to="/explore">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg h-12">
                 <i className="ri-compass-3-line mr-2"></i>
