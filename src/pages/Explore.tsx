@@ -14,7 +14,7 @@ const Explore = () => {
   const { tools, categories, loading } = useSupabaseData();
   const { trackEvent } = useAnalytics();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [selectedPricing, setSelectedPricing] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const pageRef = useRef<HTMLDivElement>(null);

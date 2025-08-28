@@ -2,12 +2,12 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import Hero from '@/components/Hero';
 import Navigation from '@/components/Navigation';
-import TrendingTools from '@/components/TrendingTools';
+import CategoriesSection from '@/components/CategoriesSection';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 const Index = () => {
-  const { tools, loading } = useSupabaseData();
+  const { loading } = useSupabaseData();
   const { trackEvent } = useAnalytics();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -42,11 +42,6 @@ const Index = () => {
     );
   }
 
-  // Get trending tools (top rated and most recent)
-  const trendingTools = tools
-    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-    .slice(0, 8);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navigation />
@@ -55,7 +50,7 @@ const Index = () => {
           <Hero />
         </div>
         <div>
-          <TrendingTools tools={trendingTools} />
+          <CategoriesSection />
         </div>
       </div>
     </div>
