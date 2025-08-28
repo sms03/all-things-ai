@@ -59,7 +59,7 @@ const Hero = () => {
           </p>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-16">
+          <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-6 md:mb-8">
             <div className="relative">
               <i className="ri-search-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
               <input
