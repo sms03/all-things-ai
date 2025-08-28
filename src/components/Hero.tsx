@@ -93,6 +93,22 @@ const Hero = () => {
               </Button>
             </Link>
           </div>
+
+          {/* Scroll Down Indicator */}
+          <div className="flex justify-center mb-4">
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('browse-categories');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 focus-ring"
+              aria-label="Scroll down for more"
+            >
+              <span>Scroll for more</span>
+              <i className="ri-arrow-down-s-line text-lg animate-bounce" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
 
         {/* Stats Grid */}
