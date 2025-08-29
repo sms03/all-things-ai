@@ -14,6 +14,7 @@ import Comparisons from "./pages/Comparisons";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectIdeas from "./pages/ProjectIdeas";
 import NotFound from "./pages/NotFound";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/tool/:id" element={<ToolDetail />} />
               <Route path="/comparisons" element={<Comparisons />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
