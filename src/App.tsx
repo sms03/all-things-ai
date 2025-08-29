@@ -11,7 +11,6 @@ import Profile from "./pages/Profile";
 import SubmitTool from "./pages/SubmitTool";
 import ToolDetail from "./pages/ToolDetail";
 import Comparisons from "./pages/Comparisons";
-import Analytics from "./pages/Analytics";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectIdeas from "./pages/ProjectIdeas";
 import NotFound from "./pages/NotFound";
@@ -35,7 +34,6 @@ const App = () => (
               <Route path="/submit" element={<SubmitTool />} />
               <Route path="/tool/:id" element={<ToolDetail />} />
               <Route path="/comparisons" element={<Comparisons />} />
-              <Route path="/analytics" element={<Analytics />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
