@@ -30,7 +30,6 @@ const Footer = () => {
                 <li><Link className="text-muted-foreground hover:text-foreground transition" to="/explore">Browse Tools</Link></li>
                 <li><Link className="text-muted-foreground hover:text-foreground transition" to="/project-ideas">Project Ideas</Link></li>
                 <li><Link className="text-muted-foreground hover:text-foreground transition" to="/comparisons">Comparisons</Link></li>
-                <li><Link className="text-muted-foreground hover:text-foreground transition" to="/analytics">Analytics</Link></li>
               </ul>
             </div>
             <div>
