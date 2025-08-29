@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Star, ThumbsUp, MessageSquare, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
