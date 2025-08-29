@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Lightbulb, TrendingUp, Clock, Users, Star, ChevronDown, ChevronUp, Heart, Zap, DollarSign } from 'lucide-react';
+import { Lightbulb, TrendingUp, Clock, Users, Star, ChevronDown, ChevronUp, Zap, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useProjectIdeas } from '@/hooks/useProjectIdeas';
-import { useAuth } from '@/hooks/useAuth';
 import Navigation from '@/components/Navigation';
 
 const ProjectIdeas = () => {
@@ -15,8 +14,7 @@ const ProjectIdeas = () => {
   const [sortBy, setSortBy] = useState('featured');
   const [expandedIdea, setExpandedIdea] = useState<string | null>(null);
 
-  const { user } = useAuth();
-  const { projectIdeas, categories, loading, upvoteIdea, isUpvoted } = useProjectIdeas();
+  const { projectIdeas, categories, loading } = useProjectIdeas();
 
   const filteredIdeas = projectIdeas.filter(idea => {
     return (
@@ -25,9 +23,7 @@ const ProjectIdeas = () => {
       (selectedBusinessPotential === 'all-potential' || idea.business_potential === selectedBusinessPotential)
     );
   }).sort((a, b) => {
-    switch (sortBy) {
-      case 'upvotes':
-        return b.upvotes_count - a.upvotes_count;
+  switch (sortBy) {
       case 'newest':
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       case 'difficulty':
@@ -58,10 +54,7 @@ const ProjectIdeas = () => {
     }
   };
 
-  const handleUpvote = async (ideaId: string) => {
-    if (!user) return;
-    await upvoteIdea(ideaId);
-  };
+  // Like/Upvote feature removed
 
   const toggleExpanded = (ideaId: string) => {
     setExpandedIdea(expandedIdea === ideaId ? null : ideaId);
@@ -149,7 +142,6 @@ const ProjectIdeas = () => {
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="featured" className="text-gray-900">Featured First</SelectItem>
-                    <SelectItem value="upvotes" className="text-gray-900">Most Upvoted</SelectItem>
                     <SelectItem value="newest" className="text-gray-900">Newest First</SelectItem>
                     <SelectItem value="difficulty" className="text-gray-900">By Difficulty</SelectItem>
                   </SelectContent>
@@ -183,7 +175,7 @@ const ProjectIdeas = () => {
             {filteredIdeas.map((idea) => (
               <Card key={idea.id} className="border border-gray-200 hover:shadow-lg transition-shadow overflow-hidden">
                 <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         {idea.featured && (
@@ -203,22 +195,6 @@ const ProjectIdeas = () => {
                       <CardDescription className="text-sm text-gray-600">
                         {idea.description}
                       </CardDescription>
-                    </div>
-                    <div className="flex flex-col items-center gap-2">
-                      <Button
-                        variant={isUpvoted(idea.id) ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handleUpvote(idea.id)}
-                        disabled={!user}
-                        className={`min-w-[60px] ${
-                          isUpvoted(idea.id) 
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                            : 'border-gray-300 text-gray-600 hover:bg-gray-50'
-                        }`}
-                      >
-                        <Heart className={`h-4 w-4 ${isUpvoted(idea.id) ? 'fill-current' : ''}`} />
-                        <span className="ml-1">{idea.upvotes_count}</span>
-                      </Button>
                     </div>
                   </div>
                 </CardHeader>
@@ -387,20 +363,7 @@ const ProjectIdeas = () => {
             </div>
           )}
 
-          {!user && (
-            <div className="mt-8 text-center">
-              <Card className="max-w-md mx-auto border border-gray-200">
-                <CardContent className="pt-6">
-                  <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Join to Upvote Ideas</h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Sign in to upvote your favorite project ideas and help the community discover the best ones.
-                  </p>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Sign In</Button>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {/* Upvote feature removed */}
         </div>
       </div>
     </div>
