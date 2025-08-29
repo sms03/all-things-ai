@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/button';
+import DotGrid from '@/components/backgrounds/DotGrid';
 import { Card, CardContent } from '@/components/ui/card';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 
@@ -43,7 +44,12 @@ const Hero = () => {
   ).length;
 
   return (
-    <div className="relative pt-12 pb-8 lg:pt-20 lg:pb-10">
+    <div className="relative pt-12 pb-8 lg:pt-20 lg:pb-10 overflow-hidden">
+      {/* Hero Background: DotGrid */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <DotGrid baseColor="#60A5FA" activeColor="#1D4ED8" gap={28} dotSize={10} />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-transparent dark:from-black/70 dark:via-black/50" />
+      </div>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div ref={heroRef} className="text-center">
           {/* Main Heading */}
