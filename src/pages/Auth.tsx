@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoles } from '@/hooks/useRoles';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
@@ -18,6 +18,8 @@ const Auth = () => {
     password: '',
     fullName: '',
   });
+  const [showSignInPassword, setShowSignInPassword] = useState(false);
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const { isAdmin, loading: rolesLoading } = useRoles();
   const navigate = useNavigate();
@@ -51,6 +53,16 @@ const Auth = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  // Password checks for Sign Up requirements
+  const pwd = formData.password || '';
+  const passwordChecks = {
+    length: pwd.length >= 8,
+    upper: /[A-Z]/.test(pwd),
+    lower: /[a-z]/.test(pwd),
+    number: /[0-9]/.test(pwd),
+    special: /[^A-Za-z0-9]/.test(pwd),
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -107,7 +119,7 @@ const Auth = () => {
 
         <Card className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl ibm-plex-serif-bold text-black dark:text-white">A2Z AI Tools</CardTitle>
+            <CardTitle className="text-2xl ibm-plex-serif-bold text-black dark:text-white">All Things AI</CardTitle>
             <CardDescription className="ibm-plex-serif-regular text-gray-600 dark:text-gray-400">
               Access your favorite AI tools and discover new ones
             </CardDescription>
@@ -136,16 +148,26 @@ const Auth = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password" className="ibm-plex-serif-medium text-black dark:text-white">Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="Enter your password"
-                      className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        name="password"
+                        type={showSignInPassword ? 'text' : 'password'}
+                        required
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Enter your password"
+                        className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white pr-10"
+                      />
+                      <button
+                        type="button"
+                        aria-label={showSignInPassword ? 'Hide password' : 'Show password'}
+                        onClick={() => setShowSignInPassword(v => !v)}
+                        className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        {showSignInPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
                   
                   <div className="text-xs text-gray-600 dark:text-gray-400 ibm-plex-serif-regular text-center p-2 bg-blue-50 dark:bg-blue-950 rounded-md border border-blue-200 dark:border-blue-800">
@@ -189,16 +211,72 @@ const Auth = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password" className="ibm-plex-serif-medium text-black dark:text-white">Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="Create a password"
-                      className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        name="password"
+                        type={showSignUpPassword ? 'text' : 'password'}
+                        required
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Create a password"
+                        className="ibm-plex-serif-regular border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white pr-10"
+                      />
+                      <button
+                        type="button"
+                        aria-label={showSignUpPassword ? 'Hide password' : 'Show password'}
+                        onClick={() => setShowSignUpPassword(v => !v)}
+                        className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+                      >
+                        {showSignUpPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    {/* Password requirements */}
+                    <div className="mt-2 rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-3">
+                      <p className="text-xs ibm-plex-serif-medium text-gray-600 dark:text-gray-300 mb-2">Password must include:</p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <li className="flex items-center text-xs">
+                          {passwordChecks.length ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-green-600 mr-2" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-red-500 mr-2" />
+                          )}
+                          <span className="ibm-plex-serif-regular text-gray-700 dark:text-gray-300">At least 8 characters</span>
+                        </li>
+                        <li className="flex items-center text-xs">
+                          {passwordChecks.upper ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-green-600 mr-2" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-red-500 mr-2" />
+                          )}
+                          <span className="ibm-plex-serif-regular text-gray-700 dark:text-gray-300">One uppercase letter</span>
+                        </li>
+                        <li className="flex items-center text-xs">
+                          {passwordChecks.lower ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-green-600 mr-2" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-red-500 mr-2" />
+                          )}
+                          <span className="ibm-plex-serif-regular text-gray-700 dark:text-gray-300">One lowercase letter</span>
+                        </li>
+                        <li className="flex items-center text-xs">
+                          {passwordChecks.number ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-green-600 mr-2" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-red-500 mr-2" />
+                          )}
+                          <span className="ibm-plex-serif-regular text-gray-700 dark:text-gray-300">One number</span>
+                        </li>
+                        <li className="flex items-center text-xs">
+                          {passwordChecks.special ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-green-600 mr-2" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-red-500 mr-2" />
+                          )}
+                          <span className="ibm-plex-serif-regular text-gray-700 dark:text-gray-300">One special character</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                   <Button type="submit" className="w-full ibm-plex-serif-medium bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors" disabled={loading}>
                     {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
