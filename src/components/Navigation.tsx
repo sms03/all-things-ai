@@ -51,7 +51,8 @@ const Navigation = () => {
   }
   return (
     <>
-      {/* Main Pill Navigation */}      <nav 
+      {/* Main Pill Navigation */}
+      <nav 
         ref={navRef} 
         className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
           isScrolled 
