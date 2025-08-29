@@ -197,7 +197,11 @@ const Profile = () => {
                 All Things AI
               </Link>
             </div>
-            <Button onClick={handleSignOut} variant="outline">
+            <Button
+              onClick={handleSignOut}
+              variant="outline"
+              className="transition-colors hover:bg-red-600 hover:text-white"
+            >
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
