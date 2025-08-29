@@ -72,7 +72,7 @@ const Navigation = () => {
           </Link>
 
           {/* Desktop Navigation Pills */}
-          <div className="hidden md:flex items-center space-x-1 mr-6">
+          <div className="hidden md:flex items-center space-x-1 mr-2">
             {navItems.map((item) => (
               <React.Fragment key={`nav-${item.path}`}>
                 {item.path === '/admin' && (
@@ -95,6 +95,14 @@ const Navigation = () => {
               </React.Fragment>
             ))}
           </div>
+
+          {/* Separator between last nav pill and Profile for non-admin users (desktop) */}
+          {user && !isAdmin() && (
+            <span
+              className="hidden md:block h-6 w-px bg-gray-300/80 dark:bg-gray-600/80 mr-2"
+              aria-hidden="true"
+            />
+          )}
 
           {/* Desktop Auth */}
           <div className="hidden md:flex items-center space-x-2">
