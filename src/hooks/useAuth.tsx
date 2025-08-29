@@ -1,4 +1,3 @@
-
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -62,7 +61,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('Error during sign out', e);
+    } finally {
+      // Proactively clear state so UI updates immediately
+      setSession(null);
+      setUser(null);
+
+      // Extra safety: clear any persisted Supabase auth tokens to avoid auto sign-in on refresh
+      try {
+        const removeAuthKeys = (storage: Storage) => {
+          const keys: string[] = [];
+          for (let i = 0; i < storage.length; i++) {
+            const k = storage.key(i);
+            if (!k) continue;
+            if (k.startsWith('sb-') || k.includes('-auth-token') || k.startsWith('supabase')) {
+              keys.push(k);
+            }
+          }
+          keys.forEach((k) => storage.removeItem(k));
+        };
+        removeAuthKeys(window.localStorage);
+        removeAuthKeys(window.sessionStorage);
+      } catch {}
+    }
   };
 
   return (
