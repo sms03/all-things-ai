@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -195,7 +194,7 @@ const Profile = () => {
                 </Button>
               </Link>
               <Link to="/" className="text-2xl font-bold text-blue-600">
-                A2Z AI Tools
+                All Things AI
               </Link>
             </div>
             <Button onClick={handleSignOut} variant="outline">
