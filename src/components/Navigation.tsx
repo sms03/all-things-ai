@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,6 +12,7 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
   useEffect(() => {
     if (navRef.current) {
       gsap.fromTo(navRef.current, 
@@ -35,6 +36,7 @@ const Navigation = () => {
   const handleSignOut = async () => {
     await signOut();
     setIsMenuOpen(false);
+  navigate('/');
   };
 
   const navItems = [
@@ -122,7 +124,7 @@ const Navigation = () => {
                   onClick={handleSignOut} 
                   variant="ghost" 
                   size="sm" 
-                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-100/80 rounded-full px-3 py-2 text-sm"
+                  className="text-gray-600 hover:text-gray-900 hover:bg-red-600 rounded-full px-3 py-2 text-sm"
                 >
                   <i className="ri-logout-box-line text-sm"></i>
                   <span className="hidden lg:block ml-2">Sign Out</span>
@@ -130,7 +132,7 @@ const Navigation = () => {
               </div>
             ) : (
               <Link to="/auth">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm shadow-md transition-all duration-200 hover:shadow-lg">
+                <Button className="bg-red-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm shadow-md transition-all duration-200 hover:shadow-lg">
                   <i className="ri-login-box-line text-sm"></i>
                   <span className="hidden lg:block ml-2">Sign In</span>
                 </Button>
@@ -190,7 +192,7 @@ const Navigation = () => {
                         Profile
                       </Button>
                     </Link>
-                    <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl">
+                    <Button onClick={handleSignOut} variant="ghost" className="w-full justify-start px-4 py-3 text-gray-600 hover:bg-gray-500 hover:text-gray-900 rounded-xl">
                       <i className="ri-logout-box-line mr-3 text-lg"></i>
                       Sign Out
                     </Button>
