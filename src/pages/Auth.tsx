@@ -20,13 +20,13 @@ const Auth = () => {
   });
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, user, loading: authLoading } = useAuth();
   const { isAdmin, loading: rolesLoading } = useRoles();
   const navigate = useNavigate();
 
   // Handle redirect after successful authentication
   useEffect(() => {
-    if (user && !loading && !rolesLoading && !redirecting) {
+    if (user && !authLoading && !rolesLoading && !redirecting) {
       setRedirecting(true);
       
       // Small delay to ensure role data is fully loaded
@@ -46,7 +46,7 @@ const Auth = () => {
         }
       }, 500);
     }
-  }, [user, isAdmin, loading, rolesLoading, navigate, redirecting]);
+  }, [user, isAdmin, authLoading, rolesLoading, navigate, redirecting]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -78,9 +78,9 @@ const Auth = () => {
         description: error.message,
         variant: "destructive",
       });
-      setLoading(false);
-    }
-    // Don't set loading to false here - let the useEffect handle redirect and loading state
+  }
+  // Reset button/loading state; redirect is controlled by the auth/roles effects
+  setLoading(false);
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
