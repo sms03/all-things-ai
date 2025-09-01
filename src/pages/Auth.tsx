@@ -9,6 +9,7 @@ import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoles } from '@/hooks/useRoles';
 import { Loader2, ArrowLeft, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
+import DotGrid from '@/components/backgrounds/DotGrid';
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
@@ -105,7 +106,12 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center p-4">
+    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden">
+      {/* Hero-style background: DotGrid with gradient overlay */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <DotGrid baseColor="#60A5FA" activeColor="#1D4ED8" gap={28} dotSize={10} />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-transparent dark:from-black/70 dark:via-black/50" />
+      </div>
       <div className="w-full max-w-md">
         <div className="mb-8">
           <Link 
