@@ -4,10 +4,6 @@
 
 **URL**: https://yallai.vercel.app
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
 <!--- 👋 Nice README header --->
 
 # All Things AI
