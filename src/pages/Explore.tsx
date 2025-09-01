@@ -103,12 +103,12 @@ const Explore = () => {
                     placeholder="Search tools..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="bg-white border-gray-300">
+                  <SelectTrigger className="h-12 bg-white border-gray-300 rounded-lg">
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
@@ -122,7 +122,7 @@ const Explore = () => {
                 </Select>
 
                 <Select value={selectedPricing} onValueChange={setSelectedPricing}>
-                  <SelectTrigger className="bg-white border-gray-300">
+                  <SelectTrigger className="h-12 bg-white border-gray-300 rounded-lg">
                     <SelectValue placeholder="All Pricing" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
@@ -134,7 +134,7 @@ const Explore = () => {
                 </Select>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="bg-white border-gray-300">
+                  <SelectTrigger className="h-12 bg-white border-gray-300 rounded-lg">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
