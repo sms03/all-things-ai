@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,20 +24,23 @@ export const useRoles = () => {
   }, [user]);
 
   const fetchCurrentUserRole = async () => {
-    if (!user) return;
+    if (!user) {
+      setCurrentUserRole('user');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .single();
+      // Use RLS-safe RPC to determine admin role
+      const { data, error } = await supabase.rpc('has_role', {
+        _user_id: user.id,
+        _role: 'admin',
+      });
 
-      if (error && error.code !== 'PGRST116') throw error;
-      
-      setCurrentUserRole(data?.role || 'user');
+      if (error) throw error;
+      setCurrentUserRole(data ? 'admin' : 'user');
     } catch (error) {
-      console.error('Error fetching current user role:', error);
+      console.error('Error fetching current user role via RPC:', error);
       setCurrentUserRole('user');
     } finally {
       setLoading(false);
@@ -67,15 +69,22 @@ export const useRoles = () => {
     try {
       const { error } = await supabase
         .from('user_roles')
-        .upsert({
-          user_id: userId,
-          role,
-          assigned_by: user.id
-        });
+        .upsert(
+          {
+            user_id: userId,
+            role,
+            assigned_by: user.id,
+          },
+          { onConflict: 'user_id,role' }
+        );
 
       if (error) throw error;
       
       await fetchUserRoles();
+      // Refresh current user's role if they were affected
+      if (userId === user.id) {
+        await fetchCurrentUserRole();
+      }
       return true;
     } catch (error) {
       console.error('Error assigning role:', error);
