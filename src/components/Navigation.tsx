@@ -7,7 +7,7 @@ import { useRoles } from '@/hooks/useRoles';
 
 const Navigation = () => {
   const { user, signOut } = useAuth();
-  const { isAdmin } = useRoles();
+  const { isAdmin, loading: rolesLoading } = useRoles();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,7 +48,8 @@ const Navigation = () => {
   ];
 
   // Add admin link for admins only
-  if (user && isAdmin()) {
+  const onAdminRoute = location.pathname.startsWith('/admin');
+  if (user && (isAdmin() || rolesLoading || onAdminRoute)) {
     navItems.push({ name: 'Admin', path: '/admin', icon: 'ri-shield-user-line' });
   }
   return (
