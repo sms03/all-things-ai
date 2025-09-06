@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import DotGrid from '@/components/backgrounds/DotGrid';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -174,14 +175,19 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">Loading...</div>
+      <div className="min-h-screen relative bg-background overflow-hidden">
+        <DotGrid className="absolute inset-0 opacity-30 pointer-events-none" gap={48} dotSize={12} />
+        <div className="relative z-10 flex items-center justify-center min-h-screen">
+          <div className="text-center">Loading...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative bg-background overflow-hidden">
+      <DotGrid className="absolute inset-0 opacity-30 pointer-events-none" gap={48} dotSize={12} />
+      <div className="relative z-10">
       {/* Header */}
       <div className="border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -209,7 +215,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Header */}
         <div className="mb-8">
           <Card>
@@ -376,6 +382,7 @@ const Profile = () => {
             )}
           </TabsContent>
         </Tabs>
+      </div>
       </div>
     </div>
   );
