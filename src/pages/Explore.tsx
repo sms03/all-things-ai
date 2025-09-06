@@ -8,10 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Navigation from '@/components/Navigation';
 import { useSupabaseData } from '@/hooks/useSupabaseData';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from '@/hooks/use-toast';
 
 const Explore = () => {
   const [searchParams] = useSearchParams();
-  const { tools, categories, loading } = useSupabaseData();
+  const { tools, categories, loading, bookmarkedToolIds, toggleBookmark } = useSupabaseData();
+  const { user } = useAuth();
   const { trackEvent } = useAnalytics();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
@@ -60,6 +63,27 @@ const Explore = () => {
 
   const handleToolClick = (tool: any) => {
     trackEvent('tool_click', { tool_id: tool.id, source: 'explore' });
+  };
+
+  const handleBookmark = async (toolId: string) => {
+    if (!user) {
+      toast({
+        title: 'Sign in required',
+        description: 'Please sign in to bookmark tools.',
+      });
+      return;
+    }
+    const result = await toggleBookmark(toolId);
+    if (result === true) {
+      toast({ title: 'Bookmarked', description: 'Tool added to your bookmarks.' });
+      trackEvent('bookmark_added', { tool_id: toolId });
+    } else if (result === false) {
+      toast({ title: 'Removed', description: 'Tool removed from your bookmarks.' });
+      // reuse generic event type if no specific remove event exists
+      trackEvent('filter_applied', { action: 'bookmark_removed', tool_id: toolId });
+    } else {
+      toast({ title: 'Error', description: 'Could not update bookmark.', variant: 'destructive' });
+    }
   };
 
   const getCategoryName = (slug: string | undefined | null) => {
@@ -162,8 +186,10 @@ const Explore = () => {
 
           {/* Tools Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredAndSortedTools.map((tool) => (
-              <Card key={tool.id} className="border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
+            {filteredAndSortedTools.map((tool) => {
+              const isBookmarked = bookmarkedToolIds.has(tool.id);
+              return (
+              <Card key={tool.id} className="relative border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -172,6 +198,16 @@ const Explore = () => {
                         {tool.description}
                       </CardDescription>
                     </div>
+                    <button
+                      type="button"
+                      aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+                      aria-pressed={isBookmarked}
+                      onClick={(e) => { e.stopPropagation(); handleBookmark(tool.id); }}
+                      className={`ml-3 h-8 w-8 shrink-0 inline-flex items-center justify-center rounded-md border transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                        ${isBookmarked ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-700' : 'bg-white border-gray-300 text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+                    >
+                      <i className={isBookmarked ? 'ri-bookmark-fill text-base' : 'ri-bookmark-line text-base'}></i>
+                    </button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -286,7 +322,7 @@ const Explore = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            );})}
           </div>
 
           {/* No Results */}
