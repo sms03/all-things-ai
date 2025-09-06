@@ -95,16 +95,35 @@ export const useRoles = () => {
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('id')
-        .eq('email', email)
+        .eq('email', email.trim().toLowerCase())
         .single();
 
-      if (profileError || !profile) {
-        console.error('User not found:', profileError);
+      if (profileError) {
+        console.error('Error finding user by email:', profileError);
         return false;
       }
 
-      // Then assign the role using the found user ID
-      return await assignRole(profile.id, role);
+      if (!profile) {
+        console.error('User not found with email:', email);
+        return false;
+      }
+
+      // Use RPC to assign role directly
+      const { error: assignError } = await supabase.rpc('assign_user_role', {
+        _user_id: profile.id,
+        _role: role,
+        _assigned_by: user.id,
+      });
+
+      if (assignError) {
+        console.error('Error assigning role via RPC:', assignError);
+        return false;
+      }
+
+      // Refresh data after successful assignment
+      await fetchUserRoles();
+      await fetchCurrentUserRole();
+      return true;
     } catch (error) {
       console.error('Error assigning role by email:', error);
       return false;
