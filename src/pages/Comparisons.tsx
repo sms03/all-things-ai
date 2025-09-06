@@ -22,12 +22,13 @@ const Comparisons = () => {
   }, [trackEvent]);
 
   const filteredTools = tools.filter(tool => {
-    const matchesSearch = !searchQuery || 
-      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tool.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
-    
+    const name = tool.name?.toLowerCase() || '';
+    const desc = tool.description?.toLowerCase() || '';
+    const query = searchQuery.toLowerCase();
+    const matchesSearch = !query || name.includes(query) || desc.includes(query);
+    // Be flexible with category field naming (category vs category_id)
+    const toolCategoryId = (tool as any).category_id || (tool as any).category;
+    const matchesCategory = selectedCategory === 'all' || toolCategoryId === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -197,30 +198,33 @@ const Comparisons = () => {
           <Card className="mb-8 border border-gray-200">
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="relative">
-                  <i className="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                {/* Unified Search Input */}
+                <div className="relative h-12">
+                  <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                   <input
                     type="text"
                     placeholder="Search tools..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
-
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="bg-white border-gray-300">
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="all" className="text-gray-900">All Categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id} className="text-gray-900">
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {/* Unified Category Select */}
+                <div className="h-12">
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="h-12 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-200">
+                      <SelectItem value="all" className="text-gray-900">All Categories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id} className="text-gray-900">
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -228,50 +232,64 @@ const Comparisons = () => {
           {/* Available Tools */}
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Available Tools</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTools.map((tool) => {
-                const isSelected = Boolean(comparisons.find(t => t.id === tool.id));
-                return (
-                  <Card key={tool.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="text-lg text-gray-900">{tool.name}</CardTitle>
-                      <CardDescription className="text-sm text-gray-600">
-                        {tool.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className={`${
-                          tool.pricing === 'free' ? 'bg-green-50 text-green-700 border-green-200' :
-                          tool.pricing === 'freemium' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
-                          'bg-purple-50 text-purple-700 border-purple-200'
-                        }`}>
-                          {tool.pricing}
-                        </Badge>
-                        <div className="flex items-center">
-                          <i className="ri-star-fill text-yellow-400 text-sm"></i>
-                          <span className="ml-1 text-sm text-gray-600">
-                            {tool.rating?.toFixed(1) || 'No rating'}
-                          </span>
+            {filteredTools.length === 0 ? (
+              <div className="border border-dashed border-gray-300 rounded-lg p-12 text-center bg-gray-50">
+                <div className="text-lg font-medium text-gray-700 mb-2">No tools match your filters</div>
+                <p className="text-sm text-gray-500 mb-6">Try adjusting your search terms or selecting a different category.</p>
+                <Button
+                  variant="outline"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                  onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
+                >
+                  Reset Filters
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTools.map((tool) => {
+                  const isSelected = Boolean(comparisons.find(t => t.id === tool.id));
+                  return (
+                    <Card key={tool.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
+                      <CardHeader className="pb-4">
+                        <CardTitle className="text-lg text-gray-900">{tool.name}</CardTitle>
+                        <CardDescription className="text-sm text-gray-600">
+                          {tool.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <Badge variant="outline" className={`${
+                            tool.pricing === 'free' ? 'bg-green-50 text-green-700 border-green-200' :
+                            tool.pricing === 'freemium' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                            'bg-purple-50 text-purple-700 border-purple-200'
+                          }`}>
+                            {tool.pricing}
+                          </Badge>
+                          <div className="flex items-center">
+                            <i className="ri-star-fill text-yellow-400 text-sm"></i>
+                            <span className="ml-1 text-sm text-gray-600">
+                              {tool.rating?.toFixed(1) || 'No rating'}
+                            </span>
+                          </div>
                         </div>
-                      </div>
 
-                      <Button
-                        onClick={() => handleAddToComparison(tool)}
-                        disabled={isSelected || comparisons.length >= 3}
-                        className={`w-full ${
-                          isSelected 
-                            ? 'bg-gray-100 text-gray-500 cursor-not-allowed' 
-                            : 'bg-blue-600 hover:bg-blue-700 text-white'
-                        }`}
-                      >
-                        {isSelected ? 'Added to Comparison' : 'Add to Compare'}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+                        <Button
+                          onClick={() => handleAddToComparison(tool)}
+                          disabled={isSelected || comparisons.length >= 3}
+                          className={`w-full ${
+                            isSelected 
+                              ? 'bg-gray-100 text-gray-500 cursor-not-allowed' 
+                              : 'bg-blue-600 hover:bg-blue-700 text-white'
+                          }`}
+                        >
+                          {isSelected ? 'Added to Comparison' : 'Add to Compare'}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Saved Comparisons */}
