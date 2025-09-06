@@ -123,7 +123,7 @@ export type Database = {
           status: string | null
           updated_at: string
           user_email: string
-          user_id: string | null
+          user_id: string
           user_name: string
           user_phone: string | null
           whatsapp_number: string | null
@@ -142,7 +142,7 @@ export type Database = {
           status?: string | null
           updated_at?: string
           user_email: string
-          user_id?: string | null
+          user_id: string
           user_name: string
           user_phone?: string | null
           whatsapp_number?: string | null
@@ -161,7 +161,7 @@ export type Database = {
           status?: string | null
           updated_at?: string
           user_email?: string
-          user_id?: string | null
+          user_id?: string
           user_name?: string
           user_phone?: string | null
           whatsapp_number?: string | null
