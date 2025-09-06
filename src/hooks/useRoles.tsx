@@ -67,16 +67,11 @@ export const useRoles = () => {
     if (!user) return false;
 
     try {
-      const { error } = await supabase
-        .from('user_roles')
-        .upsert(
-          {
-            user_id: userId,
-            role,
-            assigned_by: user.id,
-          },
-          { onConflict: 'user_id,role' }
-        );
+      const { error } = await supabase.rpc('assign_user_role', {
+        _user_id: userId,
+        _role: role,
+        _assigned_by: user.id,
+      });
 
       if (error) throw error;
       
@@ -92,6 +87,30 @@ export const useRoles = () => {
     }
   };
 
+  const assignRoleByEmail = async (email: string, role: 'admin' | 'moderator' | 'user') => {
+    if (!user) return false;
+
+    try {
+      // First, find the user by email in profiles table
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', email)
+        .single();
+
+      if (profileError || !profile) {
+        console.error('User not found:', profileError);
+        return false;
+      }
+
+      // Then assign the role using the found user ID
+      return await assignRole(profile.id, role);
+    } catch (error) {
+      console.error('Error assigning role by email:', error);
+      return false;
+    }
+  };
+
   const isAdmin = () => currentUserRole === 'admin';
   const isModerator = () => currentUserRole === 'moderator' || currentUserRole === 'admin';
 
@@ -100,6 +119,7 @@ export const useRoles = () => {
     currentUserRole,
     loading,
     assignRole,
+    assignRoleByEmail,
     isAdmin,
     isModerator,
     refetch: fetchUserRoles

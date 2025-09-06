@@ -19,11 +19,16 @@ interface User {
 }
 
 const UserManagement = () => {
-  const { userRoles, assignRole, isAdmin } = useRoles();
+  const { userRoles, assignRole, assignRoleByEmail, isAdmin } = useRoles();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
+  const [emailAssignment, setEmailAssignment] = useState({
+    email: '',
+    role: 'user' as 'admin' | 'moderator' | 'user'
+  });
+  const [isAssigning, setIsAssigning] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -58,6 +63,36 @@ const UserManagement = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleEmailRoleAssignment = async () => {
+    if (!emailAssignment.email.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter an email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsAssigning(true);
+    const success = await assignRoleByEmail(emailAssignment.email.trim(), emailAssignment.role);
+    
+    if (success) {
+      toast({
+        title: "Role assigned",
+        description: `Successfully assigned ${emailAssignment.role} role to ${emailAssignment.email}`,
+      });
+      setEmailAssignment({ email: '', role: 'user' });
+      await fetchUsers();
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to assign role. User may not exist or there was an error.",
+        variant: "destructive",
+      });
+    }
+    setIsAssigning(false);
   };
 
   const handleRoleChange = async (userId: string, newRole: 'admin' | 'moderator' | 'user') => {
@@ -124,6 +159,60 @@ const UserManagement = () => {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">User Management</h2>
         <p className="text-gray-600 dark:text-gray-400">Manage user roles and permissions</p>
       </div>
+
+      {/* Email Role Assignment */}
+      <Card className="bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <UserPlus className="h-5 w-5" />
+            Assign Role by Email
+          </CardTitle>
+          <CardDescription>
+            Assign admin or moderator roles to users by their email address
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div>
+              <Label htmlFor="email-input">Email Address</Label>
+              <Input
+                id="email-input"
+                type="email"
+                placeholder="user@example.com"
+                value={emailAssignment.email}
+                onChange={(e) => setEmailAssignment(prev => ({ ...prev, email: e.target.value }))}
+                disabled={isAssigning}
+              />
+            </div>
+            <div>
+              <Label htmlFor="role-select">Role</Label>
+              <Select 
+                value={emailAssignment.role} 
+                onValueChange={(value: 'admin' | 'moderator' | 'user') => 
+                  setEmailAssignment(prev => ({ ...prev, role: value }))
+                }
+                disabled={isAssigning}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="user">User</SelectItem>
+                  <SelectItem value="moderator">Moderator</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button 
+              onClick={handleEmailRoleAssignment}
+              disabled={isAssigning || !emailAssignment.email.trim()}
+              className="w-full md:w-auto"
+            >
+              {isAssigning ? 'Assigning...' : 'Assign Role'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Filters */}
       <Card className="bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50">
