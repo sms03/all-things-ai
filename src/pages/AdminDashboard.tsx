@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import DotGrid from '@/components/backgrounds/DotGrid';
 import { useRoles } from '@/hooks/useRoles';
 import { useAdminAnalytics } from '@/hooks/useAdminAnalytics';
 import { Navigate } from 'react-router-dom';
@@ -34,10 +35,11 @@ const AdminDashboard = () => {
 
   if (roleLoading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen relative overflow-hidden">
         <Background variant="gradient" />
+        <DotGrid className="absolute inset-0 opacity-25 pointer-events-none" gap={56} dotSize={14} />
         <Navigation />
-        <div className="flex items-center justify-center min-h-screen pt-20">
+        <div className="flex items-center justify-center min-h-screen pt-20 relative z-10">
           <div className="text-center bg-white/95 backdrop-blur-xl dark:bg-black/95 border border-gray-100/20 dark:border-white/10 rounded-3xl p-16 shadow-2xl">
             <div className="w-16 h-16 mx-auto mb-8 border-2 border-gray-900 dark:border-white rounded-full animate-spin border-t-transparent"></div>
             <div className="text-xl font-medium text-gray-900 dark:text-white">Checking permissions...</div>
@@ -52,10 +54,11 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative overflow-hidden">
       <Background variant="gradient" />
+      <DotGrid className="absolute inset-0 opacity-25 pointer-events-none" gap={56} dotSize={14} />
       <Navigation />
-      <div className="pt-20">
+      <div className="pt-20 relative z-10">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -221,7 +224,7 @@ const AdminDashboard = () => {
           </Tabs>
         </div>
       </div>
-    </div>
+  </div>
   );
 };
 
