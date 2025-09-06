@@ -19,7 +19,7 @@ interface User {
 }
 
 const UserManagement = () => {
-  const { userRoles, assignRole, assignRoleByEmail, isAdmin } = useRoles();
+  const { userRoles, assignRole, assignRoleByEmail, isAdmin, refetch } = useRoles();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,20 +32,30 @@ const UserManagement = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [userRoles]); // Refetch users when userRoles change
 
   const fetchUsers = async () => {
     try {
-      const { data: profiles, error } = await supabase
+      // First fetch all profiles
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (profilesError) throw profilesError;
+
+      // Then fetch all user roles
+      const { data: roles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('*');
+
+      if (rolesError) {
+        console.error('Error fetching roles:', rolesError);
+      }
 
       // Merge with role data
       const usersWithRoles = (profiles || []).map(profile => {
-        const userRole = userRoles.find(role => role.user_id === profile.id);
+        const userRole = (roles || []).find(role => role.user_id === profile.id);
         return {
           ...profile,
           role: userRole?.role || 'user'
@@ -76,38 +86,59 @@ const UserManagement = () => {
     }
 
     setIsAssigning(true);
-    const success = await assignRoleByEmail(emailAssignment.email.trim(), emailAssignment.role);
-    
-    if (success) {
-      toast({
-        title: "Role assigned",
-        description: `Successfully assigned ${emailAssignment.role} role to ${emailAssignment.email}`,
-      });
-      setEmailAssignment({ email: '', role: 'user' });
-      await fetchUsers();
-    } else {
+    try {
+      const success = await assignRoleByEmail(emailAssignment.email.trim(), emailAssignment.role);
+      
+      if (success) {
+        toast({
+          title: "Role assigned",
+          description: `Successfully assigned ${emailAssignment.role} role to ${emailAssignment.email}`,
+        });
+        setEmailAssignment({ email: '', role: 'user' });
+        // Refresh both users and roles data
+        await Promise.all([fetchUsers(), refetch()]);
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to assign role. User may not exist or there was an error.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
       toast({
         title: "Error",
-        description: "Failed to assign role. User may not exist or there was an error.",
+        description: "An unexpected error occurred",
         variant: "destructive",
       });
+    } finally {
+      setIsAssigning(false);
     }
-    setIsAssigning(false);
   };
 
   const handleRoleChange = async (userId: string, newRole: 'admin' | 'moderator' | 'user') => {
-    const success = await assignRole(userId, newRole);
-    
-    if (success) {
-      toast({
-        title: "Role updated",
-        description: "User role has been updated successfully",
-      });
-      await fetchUsers();
-    } else {
+    try {
+      const success = await assignRole(userId, newRole);
+      
+      if (success) {
+        toast({
+          title: "Role updated",
+          description: "User role has been updated successfully",
+        });
+        // Refresh both users and roles data
+        await Promise.all([fetchUsers(), refetch()]);
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update user role",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error updating role:', error);
       toast({
         title: "Error",
-        description: "Failed to update user role",
+        description: "An unexpected error occurred",
         variant: "destructive",
       });
     }
