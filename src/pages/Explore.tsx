@@ -17,6 +17,7 @@ const Explore = () => {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [selectedPricing, setSelectedPricing] = useState('');
   const [sortBy, setSortBy] = useState('name');
+  const [hoveredToolId, setHoveredToolId] = useState<string | null>(null);
   const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -59,6 +60,11 @@ const Explore = () => {
 
   const handleToolClick = (tool: any) => {
     trackEvent('tool_click', { tool_id: tool.id, source: 'explore' });
+  };
+
+  const getCategoryName = (slug: string | undefined | null) => {
+    if (!slug) return '—';
+    return categories.find(c => c.slug === slug)?.name || slug;
   };
 
   if (loading) {
@@ -221,7 +227,61 @@ const Explore = () => {
                       size="sm"
                       className="border-gray-300 text-gray-600 hover:bg-gray-50"
                     >
-                      <i className="ri-information-line"></i>
+                      <div
+                        className="relative"
+                        onMouseEnter={() => setHoveredToolId(tool.id)}
+                        onMouseLeave={() => setHoveredToolId(prev => prev === tool.id ? null : prev)}
+                      >
+                        <i className="ri-information-line"></i>
+                        {hoveredToolId === tool.id && (
+                          <div className="absolute right-0 top-full mt-2 w-80 z-40 p-4 rounded-lg border border-gray-200 bg-white shadow-lg text-left animate-in fade-in-0 zoom-in-95">
+                            <h4 className="font-semibold text-gray-900 mb-1 text-sm leading-tight">{tool.name}</h4>
+                            {tool.description && (
+                              <p className="text-xs text-gray-600 mb-3 leading-relaxed line-clamp-none">
+                                {tool.description}
+                              </p>
+                            )}
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {tool.tags?.map((tag: string) => (
+                                <Badge key={tag} variant="outline" className="text-[10px] bg-blue-50 text-blue-700 border-blue-200 px-1.5 py-0.5 font-medium">
+                                  {tag}
+                                </Badge>
+                              ))}
+                              {(!tool.tags || tool.tags.length === 0) && (
+                                <span className="text-[10px] text-gray-400">No tags</span>
+                              )}
+                            </div>
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[11px] text-gray-500 mb-2">
+                              <span className="font-medium text-gray-700">Category:</span>
+                              <span>{getCategoryName(tool.category)}</span>
+                              <span className="font-medium text-gray-700">Pricing:</span>
+                              <span className="capitalize">{tool.pricing || '—'}</span>
+                              <span className="font-medium text-gray-700">Rating:</span>
+                              <span>{tool.rating ? Number(tool.rating).toFixed(1) : '0.0'}</span>
+                              {tool.created_at && (
+                                <>
+                                  <span className="font-medium text-gray-700">Added:</span>
+                                  <span>{new Date(tool.created_at).toLocaleDateString()}</span>
+                                </>
+                              )}
+                            </div>
+                            {tool.website && (
+                              <a
+                                href={tool.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-[11px] text-blue-600 hover:underline font-medium"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleToolClick(tool);
+                                }}
+                              >
+                                Visit website <i className="ri-external-link-line ml-1 text-xs"></i>
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </Button>
                   </div>
                 </CardContent>
