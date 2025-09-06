@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    { "source": "/explore", "destination": "/" },
+    { "source": "/project-ideas", "destination": "/" },
+    { "source": "/auth", "destination": "/" },
+    { "source": "/profile", "destination": "/" },
+    { "source": "/submit", "destination": "/" },
+    { "source": "/comparisons", "destination": "/" },
+    { "source": "/admin", "destination": "/" },
+    { "source": "/contact", "destination": "/" },
+    { "source": "/tool/:id", "destination": "/" }
+  ]
+}
