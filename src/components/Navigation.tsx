@@ -77,7 +77,7 @@ const Navigation = () => {
           {/* Desktop Navigation Pills */}
           <div className="hidden md:flex items-center space-x-1 mr-2">
             {navItems.map((item) => (
-              <React.Fragment key={`nav-${item.path}`}>
+              <div key={`nav-${item.path}`} className="flex items-center">
                 {item.path === '/admin' && (
                   <span
                     className="mx-1 h-5 w-px bg-gray-300/80 dark:bg-gray-600/80"
@@ -95,7 +95,7 @@ const Navigation = () => {
                   <i className={`${item.icon} text-sm`}></i>
                   <span className="hidden lg:block">{item.name}</span>
                 </Link>
-              </React.Fragment>
+              </div>
             ))}
           </div>
 
@@ -165,7 +165,7 @@ const Navigation = () => {
           <div className="absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 p-6">
             <div className="space-y-3">
               {navItems.map((item) => (
-                <React.Fragment key={`mobile-${item.path}`}>
+                <div key={`mobile-${item.path}`}> 
                   {item.path === '/admin' && (
                     <div className="my-1 border-t border-gray-200/60 dark:border-gray-700/60" />
                   )}
@@ -181,7 +181,7 @@ const Navigation = () => {
                     <i className={`${item.icon} text-lg`}></i>
                     <span>{item.name}</span>
                   </Link>
-                </React.Fragment>
+                </div>
               ))}
               
               <div className="pt-4 border-t border-gray-200/50 space-y-3">
